@@ -2081,6 +2081,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native-async-storage/async-storage@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@react-native-async-storage/async-storage@npm:2.0.0"
+  dependencies:
+    merge-options: ^3.0.4
+  peerDependencies:
+    react-native: ^0.0.0-0 || >=0.65 <1.0
+  checksum: 7007a411f13988594a3f9b5ebb29f1554ab65ff2bd90814fa8b125fa68b69c431bdfcd38769ae2dcb6505aec2bad9296f0a0fa1ac8f123007eda49c826f2d138
+  languageName: node
+  linkType: hard
+
 "@react-native-community/cli-clean@npm:14.1.0":
   version: 14.1.0
   resolution: "@react-native-community/cli-clean@npm:14.1.0"
@@ -3002,6 +3013,7 @@ __metadata:
     "@babel/core": ^7.20.0
     "@babel/preset-env": ^7.20.0
     "@babel/runtime": ^7.20.0
+    "@react-native-async-storage/async-storage": ^2.0.0
     "@react-native/babel-preset": 0.75.3
     "@react-native/eslint-config": 0.75.3
     "@react-native/metro-config": 0.75.3
@@ -3022,6 +3034,7 @@ __metadata:
     react-native-reanimated: ^3.15.2
     react-native-safe-area-context: ^4.11.0
     react-native-screens: ^3.34.0
+    react-native-swiper: ^1.6.0
     react-test-renderer: 18.3.1
     typescript: 5.0.4
   languageName: unknown
@@ -5772,6 +5785,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"is-plain-obj@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "is-plain-obj@npm:2.1.0"
+  checksum: cec9100678b0a9fe0248a81743041ed990c2d4c99f893d935545cfbc42876cbe86d207f3b895700c690ad2fa520e568c44afc1605044b535a7820c1d40e38daa
+  languageName: node
+  linkType: hard
+
 "is-plain-object@npm:^2.0.4":
   version: 2.0.4
   resolution: "is-plain-object@npm:2.0.4"
@@ -6861,6 +6881,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"merge-options@npm:^3.0.4":
+  version: 3.0.4
+  resolution: "merge-options@npm:3.0.4"
+  dependencies:
+    is-plain-obj: ^2.1.0
+  checksum: d86ddb3dd6e85d558dbf25dc944f3527b6bacb944db3fdda6e84a3f59c4e4b85231095f58b835758b9a57708342dee0f8de0dffa352974a48221487fe9f4584f
+  languageName: node
+  linkType: hard
+
 "merge-stream@npm:^2.0.0":
   version: 2.0.0
   resolution: "merge-stream@npm:2.0.0"
@@ -7919,7 +7948,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
+"prop-types@npm:^15.5.10, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -8077,6 +8106,15 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 28c1f6e556c318ffcbd79d153b9612cc8a0b8d8b70f909d3cde2fd6d0586a7c151a449e57400d8996f4ee6c3b5140c5c4f643a427e974f6dc573b2bcd8eb7356
+  languageName: node
+  linkType: hard
+
+"react-native-swiper@npm:^1.6.0":
+  version: 1.6.0
+  resolution: "react-native-swiper@npm:1.6.0"
+  dependencies:
+    prop-types: ^15.5.10
+  checksum: 21e7a270dce6d249f718377a8aa2578c9a89b2b076710f6a60dc849ace5b47ade9e071345607947e738c0fdb06b17d9dad6ef99a8f76d7072b13bf3655026225
   languageName: node
   linkType: hard
 
