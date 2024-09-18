@@ -1,4 +1,4 @@
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native'
+import { View, Image, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 import { globalStyles } from '../../styles/globalStyles'
 import Swiper from 'react-native-swiper'
@@ -11,15 +11,20 @@ import { fontFamililes } from '../../constants/fontFamililes'
 const OnbroadingScreen = ({ navigation }: any) => {
 
     const [index, setIndex] = useState(0);
+    const swiperRef = React.useRef<any>(null); // Create a ref for the Swiper component
 
     return (
         <View style={[globalStyles.container]}>
             <Swiper
-                style={{}}
+                ref={swiperRef} // Assign the ref to Swiper
                 loop={false}
                 onIndexChanged={num => setIndex(num)}
                 index={index}
                 activeDotColor={appColors.white}
+                scrollEnabled={true} // Allow smooth swiping
+                autoplay={false} // Disable automatic transition
+                showsPagination={true}
+                removeClippedSubviews={false} // Ensure better performance
             >
                 <Image source={appImage.Onbroading1}
                     style={{
@@ -54,10 +59,20 @@ const OnbroadingScreen = ({ navigation }: any) => {
                 justifyContent: 'space-between',
                 alignItems: 'center',
             }}>
-                <TouchableOpacity onPress={() => navigation.navigate('LoginScreen')}>
+                <TouchableOpacity onPress={() => {
+                    if (index > 0) {
+                        swiperRef.current.scrollBy(-1, true); // Go to the previous slide with animation
+                    }
+                }}>
                     <TextComponent text='Ship' color={appColors.gray2} font={fontFamililes.medium}/>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => index < 2 ? setIndex(index + 1) : navigation.navigate('LoginScreen')} >
+                <TouchableOpacity onPress={() => {
+                    if (index < 2) {
+                        swiperRef.current.scrollBy(1, true); // Go to the next slide with animation
+                    } else {
+                        navigation.navigate('LoginScreen'); // Navigate to LoginScreen on the last slide
+                    }
+                }}>
                     <TextComponent text='Next' color={appColors.white} font={fontFamililes.medium}/>
                 </TouchableOpacity>
             </View>
@@ -65,12 +80,4 @@ const OnbroadingScreen = ({ navigation }: any) => {
     )
 }
 
-export default OnbroadingScreen
-
-const styles = StyleSheet.create({
-    text: {
-        color: appColors.white,
-        fontSize: 20,
-        fontWeight: '500'
-    }
-})
+export default OnbroadingScreen;
