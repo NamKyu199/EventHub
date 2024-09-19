@@ -2,12 +2,12 @@ import { View, Text, Button, Image, Switch } from 'react-native'
 import React, { useState } from 'react'
 import { ButtonComponent, ContainerComponent, InputComponent, RowComponent, SectionComponent, SpaceComponent, TextComponent } from '../../components'
 import { Lock1, Sms } from 'iconsax-react-native'
-import { appColors } from '../../constants/appColors'
-import { appImage } from '../../utils/appImage'
+import { appColors } from '~constants/appColors'
+import { fontFamililes } from '~constants/fontFamililes'
+import { appImage } from '~utils/appImage'
 import SocialLogin from './components/SocialLogin'
-import { fontFamililes } from '../../constants/fontFamililes'
 
-const LoginScreen = () => {
+const LoginScreen = ({ navigation }: any) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isRemember, setIsRemember] = useState(false);
@@ -17,7 +17,7 @@ const LoginScreen = () => {
       <SectionComponent styles={{
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 75
+        marginTop: 75,
       }}>
         <Image
           source={appImage.logo_text}
@@ -61,19 +61,20 @@ const LoginScreen = () => {
           </RowComponent>
           <ButtonComponent
             text={'Quên mật khẩu?'}
-            onPress={() => { }}
+            onPress={() => navigation.navigate('ForgotPassword')}
             type='text'
           />
         </RowComponent>
       </SectionComponent>
-      <SectionComponent>
+      <SectionComponent >
         <ButtonComponent text={'Đăng nhập'} type='primary' />
       </SectionComponent>
       <SocialLogin />
       <SectionComponent>
         <RowComponent justifly='center'>
           <TextComponent text={'Bạn chưa có tài khoản?'} />
-          <ButtonComponent type='link' text='Đăng ký' />
+          <SpaceComponent width={5} />
+          <ButtonComponent type='link' text='Đăng ký' onPress={() => navigation.navigate('RegisterScreen')} />
         </RowComponent>
       </SectionComponent>
     </ContainerComponent>

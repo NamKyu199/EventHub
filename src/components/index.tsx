@@ -6,6 +6,6 @@ import SectionComponent from "./SectionComponent";
 import SpaceComponent from "./SpaceComponent";
 import TextComponent from "./TextComponent";
 
-export {
-    SpaceComponent, TextComponent, InputComponent, ButtonComponent, ContainerComponent, SectionComponent, RowComponent
+export{
+    SpaceComponent,TextComponent,InputComponent,ButtonComponent,ContainerComponent,SectionComponent,RowComponent
 }

@@ -1,3 +1,14 @@
 {
-  "extends": "@react-native/typescript-config/tsconfig.json"
+  "extends": "@react-native/typescript-config/tsconfig.json",
+    // - Add this -
+  "compilerOptions": {
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      // We will have to add them same thing in balel.config.js
+      "~*": ["./src/*"]
+    }
+  },
+  // - Add this -
+  "exclude": ["node_modules"]
 }
