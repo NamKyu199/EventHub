@@ -6,11 +6,22 @@ import { appColors } from '~constants/appColors'
 import { fontFamililes } from '~constants/fontFamililes'
 import { appImage } from '~utils/appImage'
 import SocialLogin from './components/SocialLogin'
+import authenticationAPI from '~apis/authApi'
 
 const LoginScreen = ({ navigation }: any) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isRemember, setIsRemember] = useState(false);
+
+  const handleLogin = async () => {
+    try {
+      const res = await authenticationAPI.HandeleAuthentication('/hello')
+      console.log(res)
+    }
+    catch (error: any) {
+      console.log(error, 'Erorrrrr')
+    }
+  }
 
   return (
     <ContainerComponent isImageBackgroud isScroll>
@@ -67,7 +78,7 @@ const LoginScreen = ({ navigation }: any) => {
         </RowComponent>
       </SectionComponent>
       <SectionComponent >
-        <ButtonComponent text={'Đăng nhập'} type='primary' />
+        <ButtonComponent onPress={handleLogin} text={'Đăng nhập'} type='primary' />
       </SectionComponent>
       <SocialLogin />
       <SectionComponent>
