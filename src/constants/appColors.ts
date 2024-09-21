@@ -7,4 +7,5 @@ export const appColors = {
     gray3: '#E4DFDF',
     gray4: '#9d9898',
     link: '#5669FF',
+    danger: '#e74c3c'
 }

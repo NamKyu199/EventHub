@@ -1,4 +1,4 @@
-import { View, Text, Button, Image, Switch } from 'react-native'
+import { Image, Switch } from 'react-native'
 import React, { useState } from 'react'
 import { ButtonComponent, ContainerComponent, InputComponent, RowComponent, SectionComponent, SpaceComponent, TextComponent } from '../../components'
 import { Lock1, Sms } from 'iconsax-react-native'
