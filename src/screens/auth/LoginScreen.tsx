@@ -1,4 +1,4 @@
-import { Image, Switch } from 'react-native'
+import { Alert, Image, Switch } from 'react-native'
 import React, { useState } from 'react'
 import { ButtonComponent, ContainerComponent, InputComponent, RowComponent, SectionComponent, SpaceComponent, TextComponent } from '../../components'
 import { Lock1, Sms } from 'iconsax-react-native'
@@ -7,20 +7,41 @@ import { fontFamililes } from '~constants/fontFamililes'
 import { appImage } from '~utils/appImage'
 import SocialLogin from './components/SocialLogin'
 import authenticationAPI from '~apis/authApi'
+import { Validate } from '~utils/validate'
+import { useDispatch } from 'react-redux'
+import { addAuth } from '~redux/reducers/authReducer'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const LoginScreen = ({ navigation }: any) => {
+  const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isRemember, setIsRemember] = useState(false);
 
   const handleLogin = async () => {
-    try {
-      const res = await authenticationAPI.HandeleAuthentication('/hello')
-      console.log(res)
+    const emailValidation = Validate.email(email);
+    if (emailValidation) {
+      try {
+        const res = await authenticationAPI.HandeleAuthentication(
+          '/login',
+          { email, password },
+          'post'
+        );
+        dispatch(addAuth(res.data));
+        
+        await AsyncStorage.setItem(
+          'auth',
+          isRemember ? JSON.stringify(res.data) : email
+        )
+      }
+      catch (error: any) {
+        console.log(error, 'Erorrrrr')
+      }
     }
-    catch (error: any) {
-      console.log(error, 'Erorrrrr')
+    else {
+      Alert.alert('Email is not correct !!!')
     }
+
   }
 
   return (
