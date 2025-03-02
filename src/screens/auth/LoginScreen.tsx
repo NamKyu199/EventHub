@@ -28,7 +28,7 @@ const LoginScreen = ({ navigation }: any) => {
           'post'
         );
         dispatch(addAuth(res.data));
-        
+
         await AsyncStorage.setItem(
           'auth',
           isRemember ? JSON.stringify(res.data) : email
@@ -49,7 +49,7 @@ const LoginScreen = ({ navigation }: any) => {
       <SectionComponent styles={{
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 75,
+        paddingTop:30
       }}>
         <Image
           source={appImage.logo_text}
@@ -89,6 +89,7 @@ const LoginScreen = ({ navigation }: any) => {
               onChange={() => setIsRemember(!isRemember)}
 
             />
+            <SpaceComponent width={5} />
             <TextComponent text='Lưu mật khẩu' />
           </RowComponent>
           <ButtonComponent

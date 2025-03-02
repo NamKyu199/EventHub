@@ -4,9 +4,13 @@ import { ButtonComponent, ContainerComponent, InputComponent, SectionComponent, 
 import { Sms } from 'iconsax-react-native';
 import { appColors } from '~constants/appColors';
 
-const ForgotPassword = () => {
+const ForgotPassword = ({ navigation }: any) => {
 
     const [email, setEmail] = useState('');
+    const handleForgotPassword = () => {
+        navigation.navigate('Verification', { email }); // Truyền email dưới dạng object
+    }
+
     return (
         <ContainerComponent back isImageBackgroud>
             <SectionComponent>
@@ -24,7 +28,11 @@ const ForgotPassword = () => {
                 />
             </SectionComponent>
             <SectionComponent>
-                <ButtonComponent text={'Gửi'} type='primary' />
+                <ButtonComponent 
+                text={'Gửi'}
+                type='primary' 
+                onPress={handleForgotPassword} 
+                />
             </SectionComponent>
         </ContainerComponent>
     )

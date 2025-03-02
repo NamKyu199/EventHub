@@ -40,6 +40,14 @@ export const globalStyles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-start',
         alignItems: 'center'
+    },
+    iconcontainer: {
+        borderRadius: 100,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#3D56F0',
+        width: 30,
+        height: 30,
     }
 })
 
