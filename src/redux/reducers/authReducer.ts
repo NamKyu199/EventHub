@@ -9,7 +9,7 @@ interface AuthState {
 const initialState: AuthState = {
     id: '',
     email: '',
-    accesstoken: ''
+    accesstoken: '',
 };
 
 const auSlice = createSlice({

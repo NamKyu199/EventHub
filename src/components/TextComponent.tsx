@@ -1,37 +1,45 @@
-import { View, Text, StyleProp, TextStyle } from 'react-native'
-import React from 'react'
-import { appColors } from '../constants/appColors'
-import { fontFamililes } from '../constants/fontFamililes'
-import { globalStyles } from '../styles/globalStyles'
+import {View, Text, StyleProp, TextStyle, Platform} from 'react-native';
+import React from 'react';
+import {appColors} from '../constants/appColors';
+import {globalStyles} from '../styles/globalStyles';
+import { fontFamililes } from '~constants/fontFamililes';
 
 interface Props {
-    text: string,
-    color?: string,
-    size?: number,
-    flex?: number,
-    font?: string,
-    styles?: StyleProp<TextStyle>,
-    title?: boolean,
+  text: string;
+  color?: string;
+  size?: number;
+  flex?: number;
+  font?: string;
+  styles?: StyleProp<TextStyle>;
+  title?: boolean;
+  numberOfLine?: number;
 }
 
 const TextComponent = (props: Props) => {
+  const {text, size, flex, font, color, styles, title, numberOfLine} = props;
 
-    const { text, color, size, flex, font, title, styles } = props
+  const fontSizeDefault = Platform.OS === 'ios' ? 16 : 14;
 
-    return <Text style={[
+  return (
+    <Text
+      numberOfLines={numberOfLine}
+      style={[
         globalStyles.text,
         {
-            color: color ?? appColors.text,
-            flex: flex ?? 0,
-            fontSize: size ? size : title ? 24 : 14,
-            fontFamily: font
-                ? font
-                : title
-                ? fontFamililes.medium
-                : fontFamililes.regular,
+          color: color ?? appColors.text,
+          flex: flex ?? 0,
+          fontSize: size ? size : title ? 24 : fontSizeDefault,
+          fontFamily: font
+            ? font
+            : title
+            ? fontFamililes.medium
+            : fontFamililes.regular,
         },
         styles,
-    ]}>{text}</Text>
-}
+      ]}>
+      {text}
+    </Text>
+  );
+};
 
-export default TextComponent
+export default TextComponent;

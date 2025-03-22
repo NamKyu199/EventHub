@@ -22,9 +22,13 @@ const AppRouters = () => {
 
     const checkLogin = async () => {
         const res = await getItem();
-        console.log(res)
-        res && dispatch(addAuth(JSON.parse(res)));
+        if (res) {
+            const parsedData = JSON.parse(res);
+            dispatch(addAuth(parsedData));
+        }
+        setIsShowSplash(false); // Chỉ ẩn splash sau khi kiểm tra xong
     };
+
 
     return (
         <>

@@ -4,7 +4,7 @@ import { ButtonComponent, ContainerComponent, InputComponent, RowComponent, Sect
 import { Lock1, Sms } from 'iconsax-react-native'
 import { appColors } from '~constants/appColors'
 import { fontFamililes } from '~constants/fontFamililes'
-import { appImage } from '~utils/appImage'
+import { appImage } from '~constants/appImage'
 import SocialLogin from './components/SocialLogin'
 import authenticationAPI from '~apis/authApi'
 import { Validate } from '~utils/validate'
@@ -27,29 +27,30 @@ const LoginScreen = ({ navigation }: any) => {
           { email, password },
           'post'
         );
+
+        // Lưu thông tin vào Redux
         dispatch(addAuth(res.data));
 
-        await AsyncStorage.setItem(
-          'auth',
-          isRemember ? JSON.stringify(res.data) : email
-        )
-      }
-      catch (error: any) {
-        console.log(error, 'Erorrrrr')
-      }
-    }
-    else {
-      Alert.alert('Email is not correct !!!')
-    }
+        // Kiểm tra dữ liệu trước khi lưu
+        const authData = isRemember
+          ? JSON.stringify(res.data)  // Lưu toàn bộ dữ liệu nếu isRemember = true
+          : JSON.stringify({ email: email, accesstoken: res.data.accesstoken }); // Chỉ lưu email + accesstoken nếu không nhớ mật khẩu
 
-  }
+        await AsyncStorage.setItem('auth', authData);
+
+        console.log("Saved Auth Data:", authData); // Kiểm tra dữ liệu được lưu
+      } catch (error: any) {
+        console.log('Error Response:', error.response?.data); // Log lỗi chi tiết từ API
+      }
+    }
+  };
 
   return (
     <ContainerComponent isImageBackgroud isScroll>
       <SectionComponent styles={{
         justifyContent: 'center',
         alignItems: 'center',
-        paddingTop:30
+        paddingTop: 30
       }}>
         <Image
           source={appImage.logo_text}
@@ -80,7 +81,7 @@ const LoginScreen = ({ navigation }: any) => {
             <Lock1 size={22} color={appColors.gray} />
           }
         />
-        <RowComponent justifly='space-between'>
+        <RowComponent justify='space-between'>
           <RowComponent onPress={() => setIsRemember(!isRemember)}>
             <Switch
               trackColor={{ true: appColors.primary }}
@@ -104,7 +105,7 @@ const LoginScreen = ({ navigation }: any) => {
       </SectionComponent>
       <SocialLogin />
       <SectionComponent>
-        <RowComponent justifly='center'>
+        <RowComponent justify='center'>
           <TextComponent text={'Bạn chưa có tài khoản?'} />
           <SpaceComponent width={5} />
           <ButtonComponent type='link' text='Đăng ký' onPress={() => navigation.navigate('RegisterScreen')} />

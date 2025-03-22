@@ -2,7 +2,7 @@ import React from 'react'
 import { ButtonComponent, SectionComponent, SpaceComponent, TextComponent } from '../../../components'
 import { appColors } from '../../../constants/appColors'
 import { fontFamililes } from '../../../constants/fontFamililes'
-import { Facebook_SVG, Google_SVG } from '../../../utils/svg'
+import { Facebook_SVG, Google_SVG } from '../../../constants/svg'
 
 const SocialLogin = () => {
     return (

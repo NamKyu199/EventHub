@@ -229,7 +229,7 @@ const RegisterScreen = ({ navigation }: any) => {
                 <SocialLogin />
 
                 <SectionComponent>
-                    <RowComponent justifly='center'>
+                    <RowComponent justify='center'>
                         <TextComponent text={'Bạn đã có tài khoản?'} />
                         <SpaceComponent width={5} />
                         <ButtonComponent type='link' text='Đăng nhập' onPress={() => navigation.navigate('LoginScreen')} />

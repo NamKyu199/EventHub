@@ -1,6 +1,6 @@
 import { View, Text, ImageBackground, ScrollView, SafeAreaView, Platform, StatusBar, TouchableOpacity } from 'react-native'
 import React, { ReactNode } from 'react'
-import { appImage } from '~utils/appImage';
+import { appImage } from '~constants/appImage';
 import { globalStyles } from '~styles/globalStyles';
 import { useNavigation } from '@react-navigation/native';
 import RowComponent from './RowComponent';
@@ -76,11 +76,8 @@ const ContainerComponent = (props: Props) => {
             </SafeAreaView>
         </ImageBackground>
     ) : (
-        <SafeAreaView style={[globalStyles.container, {
-            flex: 1,
-            //  paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0 
-        }]}>
-            <View>{headerComponent()}</View>
+        <SafeAreaView style={[globalStyles.container]}>
+            <View style={[globalStyles.container]}>{headerComponent()}</View>
         </SafeAreaView>
     );
 };

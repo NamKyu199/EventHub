@@ -5,4 +5,11 @@ export const appImage = {
     Onbroading1: require('../assets/images/onboarding1.png'),
     Onbroading2: require('../assets/images/onboarding2.png'),
     Onbroading3: require('../assets/images/onboarding3.png'),
+    UserLogo: require('../assets/images/user-logo.png'),
+    EventLogo: require('../assets/images/Logo-Event.png'),
+    InviteLogo: require('../assets/images/Invite-logo.png'),
+    AvatarDemo: require('../assets/images/AvtTest.jpg'),
+    EventBackGround: require('../assets/images/ImageBackgroundEvent.jpg')
 }
+
+export default appImage

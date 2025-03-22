@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "282985646830",
+    "project_id": "eventhub-8577a",
+    "storage_bucket": "eventhub-8577a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:282985646830:android:5a3a140ea313fe090a81ff",
+        "android_client_info": {
+          "package_name": "com.eventhub"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUWl64jtq_-yhdd008r5VtZ2iUXU3ffO4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

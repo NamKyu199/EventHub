@@ -89,7 +89,7 @@ const Verification = ({ navigation, route }: any) => {
           text={`Chúng tôi đã gửi mã xác minh qua ${email ? email.replace(/.{1,8}/, '********') : 'email của bạn'}`}
         />
         <SpaceComponent height={27} />
-        <RowComponent justifly='space-between'>
+        <RowComponent justify='space-between'>
           {codeValues.map((val, index) => (
             <TextInput
               key={index}
@@ -113,7 +113,7 @@ const Verification = ({ navigation, route }: any) => {
           type='primary'
           iconFlex='right'
           icon={
-            <View style={[globalStyles.iconcontainer, { backgroundColor: newCode.length !== 4 ? appColors.gray : appColors.primary }]}>  
+            <View style={[globalStyles.iconContainer, { backgroundColor: newCode.length !== 4 ? appColors.gray : appColors.primary }]}>  
               <ArrowRight size={20} color={appColors.white} />
             </View>
           }
@@ -123,7 +123,7 @@ const Verification = ({ navigation, route }: any) => {
         {errorMessage && <TextComponent text={errorMessage} flex={0} styles={{ textAlign: 'center' }} color={appColors.danger} />}
       </SectionComponent>
       <SectionComponent>
-        <RowComponent justifly='center'>
+        <RowComponent justify='center'>
           <TouchableOpacity onPress={limit === 0 ? handleResendVerification : undefined}>
             <TextComponent text='Gửi lại mã' flex={0} color={limit === 0 ? appColors.purple : appColors.gray} />
           </TouchableOpacity>

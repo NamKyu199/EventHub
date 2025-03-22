@@ -6,17 +6,17 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AuthNavigator = () => {
   const Stack = createNativeStackNavigator();
-  // const [isExistingUser, setIsExistingUser] = useState(false);
+  const [isExistingUser, setIsExistingUser] = useState(false);
 
-  // useEffect(() => {
-  //   checkUserExisting()
-  // }, [])
+  useEffect(() => {
+    checkUserExisting()
+  }, [])
 
-  // const checkUserExisting = async () => {
-  //   const res = await AsyncStorage.getItem('auth');
+  const checkUserExisting = async () => {
+    const res = await AsyncStorage.getItem('auth');
 
-  //   res && setIsExistingUser(true);
-  // }
+    res && setIsExistingUser(true);
+  }
 
   return (
     <Stack.Navigator screenOptions={{
