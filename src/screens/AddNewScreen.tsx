@@ -1,39 +1,120 @@
-import React, { useState } from 'react'
-import { ButtonComponent, ChoiceLocation, ContainerComponent, DateTimePicker, InputComponent, RowComponent, SectionComponent, SpaceComponent, TextComponent } from '~components';
+import React, { useEffect, useState } from 'react'
+import { ButtonComponent, ButtonImagePicker, ChoiceLocation, ContainerComponent, DateTimePicker, DropdownPicker, InputComponent, RowComponent, SectionComponent, SpaceComponent, TextComponent } from '~components';
 import { useSelector } from 'react-redux';
 import { authSelector } from '~redux/reducers/authReducer';
 import userAPI from '~apis/userApi';
+import { SelectModel } from '~models/SelectModel';
+import { Alert, Image } from 'react-native';
+import { ImageOrVideo } from 'react-native-image-crop-picker';
+import { Validate } from '~utils/validate';
+import { appColors } from '~constants/appColors';
+import RNFS from 'react-native-fs';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { EventModle } from '~models/EventModel';
+import eventAPI from '~apis/eventApi';
+
 
 const initValues = {
   title: '',
-  descriptiont: '',
-  location: {
-    title: '',
-    address: ''
+  description: '',
+  locationTitle: '',
+  locationAddress: '',
+  position: {
+    lat: '',
+    long: '',
   },
-  imageUrl: '',
-  users: [''],
+  photoUrl: '',
+  users: [],
   authorId: '',
   startAt: Date.now(),
   endAt: Date.now(),
-  Date: Date.now(),
+  date: Date.now(),
+  price: '',
+  category: ''
 }
 
-const AddNewScreen = () => {
-  const auth: any = useSelector(authSelector)
-  const [eventData, setEventData] = useState<any>({ ...initValues, authorId: auth.id });
+const AddNewScreen = ({ navigation }: any) => {
+  const auth: any = useSelector(authSelector);
+  const [eventData, setEventData] = useState<any>({
+    ...initValues,
+    authorId: auth.id
+  });
+  const [usersSelect, setUsersSelect] = useState<SelectModel[]>([]);
+  const [fileSelected, setFileSelected] = useState<any>();
+  const [errorMessage, setErrorMessage] = useState<string[]>([]);
 
-  const handleChangeValue = (key: string, value: string | Date) => {
-    const items = { ...eventData };
-    items[`${key}`] = value;
+  useEffect(() => {
+    handleGetAllUsers();
+  }, []);
 
-    setEventData(items);
+  useEffect(() => {
+    const mess = Validate.EventValidation(eventData);
+    setErrorMessage(mess)
+  }, [eventData]);
+
+  const handleGetAllUsers = async () => {
+    const api = `/get-all`;
+    try {
+      const res: any = await userAPI.HandleUser(api);
+      if (res && res.data) {
+        const items: SelectModel[] = res.data.map((item: any) => ({
+          label: item.fullName ? item.fullName : item.email,
+          value: item.id,
+        }));
+        setUsersSelect(items);
+      }
+    } catch (error) {
+      console.log('Lỗi', error);
+    }
+  };
+
+  const saveImageToStorage = async (file: ImageOrVideo) => {
+    try {
+      if (!file?.path) return null;
+
+      const filename = file.filename || `image_${Date.now()}.jpg`;
+      const destPath = `${RNFS.DocumentDirectoryPath}/${filename}`;
+
+      await RNFS.copyFile(file.path, destPath);
+      console.log("Ảnh đã được lưu:", destPath);
+
+      return `file://${destPath}`;
+    } catch (error) {
+      console.error("Lỗi khi lưu ảnh:", error);
+      return null;
+    }
   };
 
   const handleAddEvent = async () => {
-    const res = await userAPI.HandleUser('/get-all');
-    console.log(res)
-  }
+    let savedPhotoPath = eventData.photoUrl;
+
+    if (fileSelected) {
+      const newPath = await saveImageToStorage(fileSelected);
+      if (newPath) savedPhotoPath = newPath;
+    }
+
+    const newEventData = { ...eventData, photoUrl: savedPhotoPath };
+
+    await AsyncStorage.setItem("savedEvent", JSON.stringify(newEventData));
+    console.log("✅ Sự kiện đã được lưu:", newEventData);
+    navigation.navigate('Explore', {
+      screen: 'HomeScreen'
+    })
+
+    const response = await eventAPI.HandleEvent(`/add-new`, newEventData, 'post');
+  };
+
+  const handleFileSelected = (val: ImageOrVideo) => {
+    setFileSelected(val);
+    handleChangeValue('photoUrl', val.path);
+  };
+
+  const handleChangeValue = (key: string, value: any) => {
+    setEventData((prevState: any) => ({
+      ...prevState,
+      [key]: value
+    }));
+  };
 
   return (
     <ContainerComponent isScroll>
@@ -41,55 +122,95 @@ const AddNewScreen = () => {
         <TextComponent text='Add new' title />
       </SectionComponent>
       <SectionComponent>
+        {(eventData.photoUrl || fileSelected?.path) && (
+          <Image
+            source={{ uri: eventData.photoUrl || fileSelected.path }}
+            style={{ width: '100%', height: 250, marginBottom: 12 }}
+            resizeMode='cover'
+          />
+        )}
+        <ButtonImagePicker onSelect={(val: any) =>
+          val.type === 'url'
+            ? handleChangeValue('photoUrl', val.value as string)
+            : handleFileSelected(val.value)
+        } />
         <InputComponent
           placeholder='Title'
           value={eventData.title}
-          onChange={val => handleChangeValue('title:', val)}
+          onChange={val => handleChangeValue('title', val)}
           allowClear
         />
         <InputComponent
-          placeholder='Descriptiont'
+          placeholder='Description'
           multiline
           numberOfLines={3}
-          value={eventData.descriptiont}
-          onChange={val => handleChangeValue('title:', val)}
+          value={eventData.description}
+          onChange={val => handleChangeValue('description', val)}
           allowClear
+        />
+        <DropdownPicker
+          selected={eventData.category}
+          values={[{ label: 'Sport', value: 'sport' }, { label: 'Food', value: 'food' }, { label: 'Art', value: 'art' }, { label: 'Music', value: 'music' }]}
+          onSelect={val => handleChangeValue('category', val)}
         />
         <RowComponent>
-          <DateTimePicker
-            lable='Start at:'
-            type='time'
-            onSelect={val => handleChangeValue('startAt', val)}
-            selected={eventData.startAt} />
+          <DateTimePicker label='Start at:' type='time' onSelect={val => handleChangeValue('startAt', val)} selected={eventData.startAt} />
           <SpaceComponent width={20} />
-          <DateTimePicker
-            lable='End at:'
-            type='time'
-            onSelect={val => handleChangeValue('endAt', val)}
-            selected={eventData.endAt} />
+          <DateTimePicker label='End at:' type='time' onSelect={val => handleChangeValue('endAt', val)} selected={eventData.endAt} />
         </RowComponent>
-        <DateTimePicker
-          lable='Date'
-          type='date'
-          onSelect={val => handleChangeValue('Date', val)}
-          selected={eventData.Date} />
+        <DateTimePicker label='Date' type='date' onSelect={val => handleChangeValue('date', val)} selected={eventData.date} />
+        <DropdownPicker
+          label='Invited users'
+          values={usersSelect}
+          onSelect={(val) => handleChangeValue('users', Array.isArray(val) ? val : [val])}
+          selected={eventData.users}
+          mutible
+        />
         <InputComponent
           placeholder='Title Address'
-          value={eventData.descriptiont}
-          onChange={val => handleChangeValue('location', { ...eventData.location, title: val })}
+          value={eventData.locationTitle}
+          onChange={val => handleChangeValue('locationTitle', val)}
           allowClear
         />
-        <ChoiceLocation />
+        <ChoiceLocation onSelect={(val) => {
+          handleChangeValue('locationAddress', val.address);
+          handleChangeValue('position', val.position ? { lat: val.position.lat, long: val.position.long } : { lat: '', long: '' });
+        }} />
+        <InputComponent
+          placeholder='Price'
+          type='number-pad'
+          allowClear
+          value={eventData.price}
+          onChange={val => handleChangeValue('price', val)}
+        />
       </SectionComponent>
+      {
+        errorMessage.length > 0 &&
+        <SectionComponent>
+          {errorMessage.map(mess =>
+            <TextComponent
+              text={mess}
+              key={mess}
+              color={appColors.danger}
+              styles={{ marginBottom: 12 }}
+            />
+          )}
+        </SectionComponent>
+      }
       <SectionComponent>
         <ButtonComponent
+          disable={errorMessage.length > 0}
           text='Add New'
           onPress={handleAddEvent}
           type='primary'
         />
       </SectionComponent>
     </ContainerComponent>
-  )
-}
+  );
+};
 
-export default AddNewScreen
+export default AddNewScreen;
+
+function alert(arg0: string) {
+  throw new Error('Function not implemented.');
+}

@@ -16,4 +16,15 @@ export class Validate {
         const fullNameValidation = /^[a-zA-ZÀ-ỹ\s]{5,}$/; // At least 5 letters, allows letters and spaces only
         return fullNameValidation.test(name);
     }
+
+    static EventValidation = (data: any) => {
+        const mess: string[] = [];
+        Object.keys(data).forEach(key => {
+            if (key !== 'description' && key !== 'users') {
+                !data[key] && mess.push(`${key} is required!!!`);
+            }
+        });
+
+        return mess
+    }
 }

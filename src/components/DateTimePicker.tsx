@@ -13,18 +13,18 @@ interface Props {
     selected: Date,
     type: 'date' | 'time',
     onSelect: (val: Date) => void;
-    lable?: string
+    label?: string
 }
 
 const DateTimePicker = (props: Props) => {
 
-    const { type, onSelect, selected, lable } = props;
+    const { type, onSelect, selected, label } = props;
     const [isShowDatePicker, setIsShowDatePicker] = useState(false);
 
     return (
         <View style={{ flex: 1 }}>
-            {lable && (
-                <TextComponent text={lable} styles={{ marginBottom: 8 }} />
+            {label && (
+                <TextComponent text={label} styles={{ marginBottom: 8 }} />
             )}
             <RowComponent styles={[globalStyles.inputcontainer]} onPress={() => setIsShowDatePicker(true)}>
                 <TextComponent

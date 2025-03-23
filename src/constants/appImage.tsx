@@ -9,7 +9,8 @@ export const appImage = {
     EventLogo: require('../assets/images/Logo-Event.png'),
     InviteLogo: require('../assets/images/Invite-logo.png'),
     AvatarDemo: require('../assets/images/AvtTest.jpg'),
-    EventBackGround: require('../assets/images/ImageBackgroundEvent.jpg')
+    EventBackGround: require('../assets/images/ImageBackgroundEvent.jpg'),
+    MarkerBg: require('../assets/images/Marker_bg.png'),
 }
 
 export default appImage

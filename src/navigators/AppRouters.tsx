@@ -32,7 +32,9 @@ const AppRouters = () => {
 
     return (
         <>
-            {isShowSplash ? <SplashScreen /> : auth.accesstoken !== '' ? <MainNavigator /> : <AuthNavigator />}
+            {isShowSplash ?
+                <SplashScreen /> : auth.accesstoken !== '' ?
+                    <MainNavigator /> : <AuthNavigator />}
         </>
     )
 }

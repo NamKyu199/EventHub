@@ -59,7 +59,7 @@ const InputComponent = (props: Props) => {
                         />
                     </TouchableOpacity>
                 ) : (
-                    allowClear && value.length > 0 && (
+                    value && allowClear && value.length > 0 && (
                         <TouchableOpacity
                             onPress={() => onChange('')}
                             style={{}}

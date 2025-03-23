@@ -6,16 +6,9 @@ import { ArrowRight2, Location } from 'iconsax-react-native'
 import { appColors } from '~constants/appColors'
 import ModalLocation from '~modals/ModalLocation'
 
-const ChoiceLocation = () => {
-
+const ChoiceLocation = ({ onSelect }: { onSelect: (val: { address: string; position?: { lat: number; long: number } }) => void }) => {
   const [isVisibleModalLocation, setIsVisibleModalLocation] = useState(false);
-  const [addressSelected, setAddressSelected] = useState<{
-    address: string,
-    position?: {
-      lat: number,
-      long: number,
-    }
-  }>();
+  const [addressSelected, setAddressSelected] = useState<{ address: string; position?: { lat: number; long: number } }>();
 
   return (
     <>
@@ -23,7 +16,7 @@ const ChoiceLocation = () => {
         styles={[globalStyles.inputcontainer]}
         onPress={() => setIsVisibleModalLocation(!isVisibleModalLocation)}
       >
-        <Location size={22} variant='Bold' color={`${appColors.primary}80`} />
+        <Location size={22} variant="Bold" color={`${appColors.primary}80`} />
         <SpaceComponent width={12} />
         <TextComponent text={addressSelected ? addressSelected.address : 'Choice'} flex={1} />
         <ArrowRight2 color={appColors.primary} size={22} />
@@ -31,10 +24,14 @@ const ChoiceLocation = () => {
       <ModalLocation
         visible={isVisibleModalLocation}
         onClose={() => setIsVisibleModalLocation(false)}
-        onSelect={val => setAddressSelected(val)}
+        onSelect={(val) => {
+          console.log('Địa điểm được chọn:', val); // Kiểm tra dữ liệu
+          setAddressSelected(val);
+          onSelect(val); // Gửi cả địa chỉ và tọa độ lên component cha
+        }}
       />
     </>
-  )
-}
+  );
+};
 
-export default ChoiceLocation
+export default ChoiceLocation;

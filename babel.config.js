@@ -3,6 +3,7 @@ module.exports = {
 
   plugins: [
     'react-native-reanimated/plugin',
+    'module:react-native-dotenv',
     [
       'module-resolver',
       {
@@ -24,6 +25,6 @@ module.exports = {
       },
     ],
   ],
-     // - Add this -
+  // - Add this -
 
 };
