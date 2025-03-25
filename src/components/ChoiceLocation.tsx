@@ -25,7 +25,6 @@ const ChoiceLocation = ({ onSelect }: { onSelect: (val: { address: string; posit
         visible={isVisibleModalLocation}
         onClose={() => setIsVisibleModalLocation(false)}
         onSelect={(val) => {
-          console.log('Địa điểm được chọn:', val); // Kiểm tra dữ liệu
           setAddressSelected(val);
           onSelect(val); // Gửi cả địa chỉ và tọa độ lên component cha
         }}

@@ -33,17 +33,17 @@ import { appInfo } from '~constants/appInfos';
 import GeoLocation from '@react-native-community/geolocation'
 import axios from 'axios';
 import { AddressModel } from '~models/AddressModel';
+import eventAPI from '~apis/eventApi';
+import { EventModle } from '~models/EventModel';
 
 const HomeScreen = ({ navigation }: any) => {
-  const dispatch = useDispatch();
-  const auth = useSelector(authSelector);
   const [currentLocation, setCurrentLocation] = useState<AddressModel>();
+  const [events, setEvents] = useState<EventModle[]>([]);
+  const [nearbyEvents, setNearbyEvents] = useState<EventModle[]>([]);
 
   useEffect(() => {
-    console.log('useEffect chạy');
     GeoLocation.getCurrentPosition(
       (position) => {
-        console.log('Lấy được vị trí:', position);
         if (position.coords) {
           reverseGeoCode({
             lat: position.coords.latitude,
@@ -56,36 +56,34 @@ const HomeScreen = ({ navigation }: any) => {
       },
       { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
     );
+    getEvents();
   }, []);
+
+  useEffect(() => {
+    currentLocation && getEvents(currentLocation.position.lat, currentLocation.position.lng);
+  }, [currentLocation])
 
 
   const reverseGeoCode = async ({ lat, long }: { lat: Number; long: Number }) => {
     const api = `https://revgeocode.search.hereapi.com/v1/revgeocode?at=${lat},${long}&apikey=1lI5kNe7xVRqbwGlWQpct5_eQCDzWWPOdl5z-VWJHkA`
-    console.log('Gọi API địa chỉ với tọa độ:', lat, long);
     try {
       const res = await axios.get(api);
       const items = res.data.items;
-      console.log('Kết quả API:', items[0]);
       setCurrentLocation(items[0]);
     } catch (error) {
       console.log('Lỗi API:', error);
     }
   };
 
+  const getEvents = async (lat?: number, long?: number, distance?: number) => {
+    const api = lat && long ? `/get-event?lat=${lat}&long=${long}&distance=${distance ?? 30}limit=5` : `/get-event?limit=10`;
 
-  const itemEvent = {
-    title: 'International Band Music Concert',
-    descriptiont: 'Enjoy your favorite dishe and a lovely your friends and family and have a great time. Food from local food trucks will be available for purchase.',
-    location: {
-      title: 'Gala Convention Center',
-      address: '36 Guild Street London, UK '
-    },
-    imageUrl: '',
-    users: [''],
-    authorId: '',
-    startAt: Date.now(),
-    endAt: Date.now(),
-    Date: Date.now(),
+    try {
+      const res = await eventAPI.HandleEvent(api);
+      res && res.data && lat && long ? setNearbyEvents(res.data) : setEvents(res.data);
+    } catch (error) {
+      console.log('Lỗi API in HomeScreeen:', error);
+    }
   }
 
   return (
@@ -122,7 +120,7 @@ const HomeScreen = ({ navigation }: any) => {
               </RowComponent>
               {currentLocation && (
                 <TextComponent
-                  text={`${currentLocation.address.city},${currentLocation.address.countryCode}`}
+                  text={`${currentLocation.address.city} • ${currentLocation.address.countryName}`}
                   flex={0}
                   color={appColors.white}
                   font={fontFamililes.medium}
@@ -218,9 +216,9 @@ const HomeScreen = ({ navigation }: any) => {
           <FlatList
             showsHorizontalScrollIndicator={false}
             horizontal
-            data={Array.from({ length: 5 })}
+            data={events}
             renderItem={({ item, index }) => (
-              <EventItem key={`event${index}`} item={itemEvent} type={'card'} />
+              <EventItem key={`event${index}`} item={item} type={'card'} />
             )}
           />
           <CardComponent bgColor='#D6FEFF' styles={{ borderRadius: 16, padding: 16 }}>
@@ -242,14 +240,13 @@ const HomeScreen = ({ navigation }: any) => {
               </View>
             </RowComponent>
           </CardComponent>
-
-          <TabBarComponent title='Neaby You' onPress={() => { }} />
+          <TabBarComponent title='Nearby You' onPress={() => { }} />
           <FlatList
             showsHorizontalScrollIndicator={false}
             horizontal
-            data={Array.from({ length: 5 })}
+            data={nearbyEvents}
             renderItem={({ item, index }) => (
-              <EventItem key={`event${index}`} item={itemEvent} type={'card'} />
+              <EventItem key={`event${index}`} item={item} type={'card'} />
             )}
           />
         </SectionComponent>

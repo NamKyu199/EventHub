@@ -76,7 +76,6 @@ const AddNewScreen = ({ navigation }: any) => {
       const destPath = `${RNFS.DocumentDirectoryPath}/${filename}`;
 
       await RNFS.copyFile(file.path, destPath);
-      console.log("Ảnh đã được lưu:", destPath);
 
       return `file://${destPath}`;
     } catch (error) {
@@ -96,7 +95,6 @@ const AddNewScreen = ({ navigation }: any) => {
     const newEventData = { ...eventData, photoUrl: savedPhotoPath };
 
     await AsyncStorage.setItem("savedEvent", JSON.stringify(newEventData));
-    console.log("✅ Sự kiện đã được lưu:", newEventData);
     navigation.navigate('Explore', {
       screen: 'HomeScreen'
     })

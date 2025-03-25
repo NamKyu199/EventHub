@@ -93,7 +93,6 @@ const RegisterScreen = ({ navigation }: any) => {
         if (!formIsValid) return;
         setIsloading(true);
         try {
-            console.log('Gửi yêu cầu xác thực đến API...');
             const res = await authenticationAPI.HandeleAuthentication(
                 `/verification`,
                 {

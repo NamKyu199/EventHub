@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StatusBar, TouchableOpacity, View } from 'react-native';
+import { FlatList, StatusBar, TouchableOpacity, View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import GeoLocation from '@react-native-community/geolocation';
 import { ButtonComponent, CardComponent, InputComponent, MakerCustom, RowComponent, SpaceComponent, TextComponent } from '~components';
@@ -9,7 +9,7 @@ import { globalStyles } from '~styles/globalStyles';
 import CategoriesList from '~components/CategoriesList';
 import eventAPI from '~apis/eventApi';
 import { EventModle } from '~models/EventModel';
-import { darkMapStyle } from '~constants/darkMapStyle';
+import EventItem from '~components/EventItem';
 
 const MapScreen = ({ navigation }: any) => {
   const [currentLocation, setCurrentLocation] = useState<{ lat: number; long: number } | undefined>(undefined);
@@ -19,7 +19,6 @@ const MapScreen = ({ navigation }: any) => {
     GeoLocation.getCurrentPosition(
       (position) => {
         if (position.coords) {
-          console.log("📍 Vị trí hiện tại:", position.coords.latitude, position.coords.longitude);
           setCurrentLocation({
             lat: position.coords.latitude,
             long: position.coords.longitude,
@@ -39,11 +38,10 @@ const MapScreen = ({ navigation }: any) => {
 
   const getNearbyEvents = async () => {
     if (!currentLocation) return;
-    
+
     const api = `/get-event?lat=${currentLocation.lat}&long=${currentLocation.long}&distance=${30}`;
     try {
       const res = await eventAPI.HandleEvent(api);
-      console.log("🎯 Dữ liệu sự kiện từ API:", JSON.stringify(res.data, null, 2));
 
       if (Array.isArray(res.data)) {
         // Lọc bỏ sự kiện không có vị trí hợp lệ
@@ -78,8 +76,6 @@ const MapScreen = ({ navigation }: any) => {
             latitudeDelta: 0.1,
             longitudeDelta: 0.1,
           }}
-          mapType='standard'
-          customMapStyle={darkMapStyle}
         >
           {events.map((event, index) => (
             <Marker
@@ -91,7 +87,7 @@ const MapScreen = ({ navigation }: any) => {
                 longitude: event.position.long,
               }}
             >
-              <MakerCustom />
+              <MakerCustom type={event.category} />
             </Marker>
           ))}
         </MapView>
@@ -130,6 +126,24 @@ const MapScreen = ({ navigation }: any) => {
           </CardComponent>
         </RowComponent>
         <CategoriesList />
+      </View>
+
+      {/* FlastList */}
+      <View style={{
+        position: 'absolute',
+        bottom: 10,
+        left: 0,
+        right: 0,
+      }}>
+        <FlatList
+          initialScrollIndex={0}
+          data={events}
+          renderItem={({ item }) => (
+            <EventItem item={item} type='list' />
+          )}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+        />
       </View>
     </View>
   );

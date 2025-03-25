@@ -1,4 +1,5 @@
 export interface EventModle {
+  findIndex(arg0: (id: any) => boolean): unknown
   _v: number
   _id: string
   authorId: string
@@ -11,13 +12,15 @@ export interface EventModle {
   photoUrl: string
   position: Position
   price: string
+  date: number | Date;
   startAt: number
   title: string
   updatedAt: string
-  users: any []
-  }
-  export interface Position {
+  users: string[]
+  followers?: string[]
+}
+export interface Position {
   _id: string
   lat: number
   long: number
-  }
+}

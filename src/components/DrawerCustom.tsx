@@ -61,9 +61,13 @@ const DrawerCustom = ({ navigation }: any) => {
   const dispatch = useDispatch();
 
   const handleSignOut = async () => {
-    await AsyncStorage.removeItem('auth'); // Xóa thông tin đăng nhập khỏi AsyncStorage
-    dispatch(removeAuth({})); // Cập nhật Redux state
-    navigation.navigate('Login'); // Điều hướng về màn hình đăng nhập
+    try {
+      await AsyncStorage.removeItem('auth'); // Xóa thông tin đăng nhập khỏi AsyncStorage
+      dispatch(removeAuth()); // Reset Redux state
+      navigation.replace('Login'); // Chuyển đến màn hình đăng nhập
+    } catch (error) {
+      console.error('❌ Lỗi khi đăng xuất:', error);
+    }
   };
 
   return (
@@ -83,7 +87,6 @@ const DrawerCustom = ({ navigation }: any) => {
               item.key === 'SignOut'
                 ? () => handleSignOut()
                 : () => {
-                  console.log(item.key);
                   navigation.closeDrawer();
                 }
             }>

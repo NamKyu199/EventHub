@@ -9,19 +9,22 @@ import SpaceComponent from './SpaceComponent'
 
 interface Props {
   size?: number
+  userIds: string[]
 }
 
-const AvatarGroup = (props: Props) => {
-  const { size } = props;
+const AvatarGroup = ({ size = 24, userIds }: Props) => {
+  const displayedUsers = userIds.slice(0, 3); // Lấy tối đa 3 user
+  const remainingUsers = userIds.length - displayedUsers.length; // Tính số lượng còn lại
+
   return (
     <RowComponent justify='flex-start' styles={{ marginVertical: 12 }}>
-      {Array.from({ length: 3 }).map((item, index) => (
+      {displayedUsers.map((userId, index) => (
         <Image
-          key={`img${index}`}
-          source={appImage.AvatarDemo}
+          key={userId} // Dùng userId làm key thay vì index
+          source={appImage.AvatarDemo} // Cần thay bằng ảnh user thực tế nếu có
           style={{
-            width: size ?? 24,
-            height: size ?? 24,
+            width: size,
+            height: size,
             borderRadius: 100,
             borderWidth: 1,
             borderColor: appColors.white,
@@ -29,13 +32,17 @@ const AvatarGroup = (props: Props) => {
           }}
         />
       ))}
-      <SpaceComponent width={12} />
-      <TextComponent
-        text='+ 22 going'
-        size={12 + (size ? (size - 24) / 5 : 0)}
-        color={appColors.primary}
-        font={fontFamililes.semiBold}
-      />
+      {remainingUsers > 0 && (
+        <>
+          <SpaceComponent width={12} />
+          <TextComponent
+            text={`+ ${remainingUsers} going`}
+            size={12 + (size - 24) / 5}
+            color={appColors.primary}
+            font={fontFamililes.semiBold}
+          />
+        </>
+      )}
     </RowComponent>
   )
 }

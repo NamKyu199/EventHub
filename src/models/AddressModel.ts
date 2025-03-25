@@ -16,6 +16,7 @@ export interface AddressModel {
   }
   
   export interface Address {
+    [x: string]: any
     city: string
     countryCode: string
     countryName: string

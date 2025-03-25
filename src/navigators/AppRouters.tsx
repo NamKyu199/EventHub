@@ -3,32 +3,42 @@ import MainNavigator from './MainNavigator'
 import AuthNavigator from './AuthNavigator'
 import { useAsyncStorage } from '@react-native-async-storage/async-storage'
 import { useDispatch, useSelector } from 'react-redux'
-import { addAuth, authSelector } from '~redux/reducers/authReducer'
+import { addAuth, addFollowedEvent, authSelector, AuthState } from '~redux/reducers/authReducer'
 import { SplashScreen } from '~screens'
+import userAPI from '~apis/userApi'
+import { UserHandle } from '~utils/UserHandlers'
 
 const AppRouters = () => {
     const [isShowSplash, setIsShowSplash] = useState(true);
     const { getItem } = useAsyncStorage('auth');
-    const auth = useSelector(authSelector);
+    const auth: AuthState = useSelector(authSelector);
     const dispatch = useDispatch();
 
     useEffect(() => {
-        checkLogin();
-        const timeout = setTimeout(() => {
-            setIsShowSplash(false);
-        }, 1500);
-        return () => clearTimeout(timeout);
+        handleGetDatas();
     }, []);
+
+    useEffect(() => {
+        UserHandle.getFollowersById(auth.id, dispatch);
+    }, [auth.id]);
+
+    const handleGetDatas = async () => {
+        await checkLogin();
+
+        setIsShowSplash(false);
+    }
 
     const checkLogin = async () => {
         const res = await getItem();
         if (res) {
             const parsedData = JSON.parse(res);
             dispatch(addAuth(parsedData));
+        } else {
+            console.log("❌ Không có dữ liệu auth trong AsyncStorage");
         }
-        setIsShowSplash(false); // Chỉ ẩn splash sau khi kiểm tra xong
-    };
 
+        setIsShowSplash(false); // Đảm bảo luôn cập nhật state
+    };
 
     return (
         <>

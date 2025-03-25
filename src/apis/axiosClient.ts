@@ -7,14 +7,10 @@ const getAccessToken = async () => {
     try {
         const res = await AsyncStorage.getItem('auth');
         if (!res) return '';
-
         const data = JSON.parse(res);
         if (!data?.accesstoken) {
-            console.log("Không tìm thấy access token trong AsyncStorage");
             return '';
         }
-
-        console.log("Stored Access Token:", data.accesstoken); // Debug access token
         return data.accesstoken;
     } catch (error) {
         console.error("Lỗi khi lấy token từ AsyncStorage:", error);
@@ -29,17 +25,12 @@ const axiosClient = axios.create({
 
 axiosClient.interceptors.request.use(async (config: any) => {
     const accesstoken = await getAccessToken();
-
     if (!config.headers) {
         config.headers = {};
     }
-
     config.headers.Authorization = accesstoken ? `Bearer ${accesstoken}` : '';
     config.headers.Accept = 'application/json';
     config.headers['Content-Type'] = 'application/json';
-
-    console.log("Request Headers:", config.headers); // Debug headers
-
     return config;
 });
 

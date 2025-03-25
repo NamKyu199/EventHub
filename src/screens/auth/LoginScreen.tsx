@@ -27,18 +27,13 @@ const LoginScreen = ({ navigation }: any) => {
           { email, password },
           'post'
         );
-
         // Lưu thông tin vào Redux
         dispatch(addAuth(res.data));
-
         // Kiểm tra dữ liệu trước khi lưu
         const authData = isRemember
           ? JSON.stringify(res.data)  // Lưu toàn bộ dữ liệu nếu isRemember = true
           : JSON.stringify({ email: email, accesstoken: res.data.accesstoken }); // Chỉ lưu email + accesstoken nếu không nhớ mật khẩu
-
         await AsyncStorage.setItem('auth', authData);
-
-        console.log("Saved Auth Data:", authData); // Kiểm tra dữ liệu được lưu
       } catch (error: any) {
         console.log('Error Response:', error.response?.data); // Log lỗi chi tiết từ API
       }
