@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'react-native';
 import { Provider } from 'react-redux';
@@ -6,8 +6,13 @@ import store from '~redux/store';
 import AppRouters from '~navigators/AppRouters';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Host } from 'react-native-portalize'
+import { HandleNotification } from '~utils/handleNotification';
 
 const App = () => {
+
+  useEffect(() => {
+    HandleNotification.checkNotificationPermission();
+  }, []);
 
   return (
     <>

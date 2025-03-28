@@ -6,12 +6,8 @@ import {
 } from 'iconsax-react-native';
 import React, { useEffect, useState } from 'react';
 import {
-  Alert,
-  Dimensions,
   FlatList,
   Image,
-  ImageBackground,
-  PermissionsAndroid,
   Platform,
   ScrollView,
   StatusBar,
@@ -19,11 +15,9 @@ import {
   View,
 } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { useDispatch, useSelector } from 'react-redux';
 import { CardComponent, RowComponent, SectionComponent, SpaceComponent, TabBarComponent, TagComponent, TextComponent } from '~components';
 import { fontFamililes } from '~constants/fontFamililes';
 import CircleComponent from '~components/CircleComponent';
-import { authSelector } from '~redux/reducers/authReducer';
 import { globalStyles } from '~styles/globalStyles';
 import { appColors } from '~constants/appColors';
 import CategoriesList from '~components/CategoriesList';
@@ -35,6 +29,7 @@ import axios from 'axios';
 import { AddressModel } from '~models/AddressModel';
 import eventAPI from '~apis/eventApi';
 import { EventModle } from '~models/EventModel';
+import { HandleNotification } from '~utils/handleNotification';
 
 const HomeScreen = ({ navigation }: any) => {
   const [currentLocation, setCurrentLocation] = useState<AddressModel>();
@@ -42,6 +37,8 @@ const HomeScreen = ({ navigation }: any) => {
   const [nearbyEvents, setNearbyEvents] = useState<EventModle[]>([]);
 
   useEffect(() => {
+    // Lấy quyền và FCM Token khi vào màn hình Home
+    HandleNotification.checkNotificationPermission();
     GeoLocation.getCurrentPosition(
       (position) => {
         if (position.coords) {

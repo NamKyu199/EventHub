@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FlatList, StatusBar, TouchableOpacity, View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import GeoLocation from '@react-native-community/geolocation';
-import { ButtonComponent, CardComponent, InputComponent, MakerCustom, RowComponent, SpaceComponent, TextComponent } from '~components';
+import { CardComponent, InputComponent, MakerCustom, RowComponent, SpaceComponent } from '~components';
 import { ArrowLeft2, Gps } from 'iconsax-react-native';
 import { appColors } from '~constants/appColors';
 import { globalStyles } from '~styles/globalStyles';
@@ -14,23 +14,23 @@ import EventItem from '~components/EventItem';
 const MapScreen = ({ navigation }: any) => {
   const [currentLocation, setCurrentLocation] = useState<{ lat: number; long: number } | undefined>(undefined);
   const [events, setEvents] = useState<EventModle[]>([]);
+  const mapRef = useRef<MapView>(null);
 
   useEffect(() => {
     GeoLocation.getCurrentPosition(
       (position) => {
         if (position.coords) {
-          setCurrentLocation({
+          const location = {
             lat: position.coords.latitude,
             long: position.coords.longitude,
-          });
+          };
+          setCurrentLocation(location);
         }
       },
       (error) => {
         console.error('❌ Lỗi lấy vị trí:', error);
       },
-      { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
-    );
-  }, []);
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 });}, []);
 
   useEffect(() => {
     if (currentLocation) getNearbyEvents();
@@ -44,7 +44,6 @@ const MapScreen = ({ navigation }: any) => {
       const res = await eventAPI.HandleEvent(api);
 
       if (Array.isArray(res.data)) {
-        // Lọc bỏ sự kiện không có vị trí hợp lệ
         const validEvents = res.data.filter(event => event.position?.lat && event.position?.long);
         setEvents(validEvents);
       } else {
@@ -55,13 +54,24 @@ const MapScreen = ({ navigation }: any) => {
     }
   };
 
+  const moveToCurrentLocation = () => {
+    if (!currentLocation || !mapRef.current) return;
+    mapRef.current.animateToRegion({
+      latitude: currentLocation.lat,
+      longitude: currentLocation.long,
+      latitudeDelta: 0.1,
+      longitudeDelta: 0.1,
+    }, 1000);
+  };
+
   return (
     <View style={{ flex: 1 }}>
       <StatusBar barStyle='dark-content' />
 
-      {/* MapsView  */}
+      {/* MapsView */}
       {currentLocation ? (
         <MapView
+          ref={mapRef}
           style={{ width: '100%', height: '100%' }}
           showsUserLocation
           initialRegion={{
@@ -70,11 +80,11 @@ const MapScreen = ({ navigation }: any) => {
             latitudeDelta: 0.1,
             longitudeDelta: 0.1,
           }}
-          region={{
-            latitude: currentLocation.lat,
-            longitude: currentLocation.long,
-            latitudeDelta: 0.1,
-            longitudeDelta: 0.1,
+          mapPadding={{
+            top: 0,
+            right: 0,
+            bottom: 150,
+            left: 0,
           }}
         >
           {events.map((event, index) => (
@@ -118,7 +128,7 @@ const MapScreen = ({ navigation }: any) => {
           </View>
           <SpaceComponent width={12} />
           <CardComponent
-            onPress={getNearbyEvents}
+            onPress={moveToCurrentLocation}
             styles={[globalStyles.nospaceCard, globalStyles.card, globalStyles.shadow, { width: 50, height: 50 }]}
             bgColor='#FFFFFFB3'
           >
@@ -128,7 +138,7 @@ const MapScreen = ({ navigation }: any) => {
         <CategoriesList />
       </View>
 
-      {/* FlastList */}
+      {/* FlatList */}
       <View style={{
         position: 'absolute',
         bottom: 10,

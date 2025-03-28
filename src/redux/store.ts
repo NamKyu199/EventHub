@@ -5,6 +5,11 @@ const store = configureStore({
     reducer: {
         authReducer: authReducer,
     },
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+            immutableCheck: false, // Tắt kiểm tra bất biến
+            serializableCheck: false, // Tắt kiểm tra khả năng tuần tự hóa
+        }),
 });
 
 export default store;

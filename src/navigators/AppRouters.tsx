@@ -3,9 +3,8 @@ import MainNavigator from './MainNavigator'
 import AuthNavigator from './AuthNavigator'
 import { useAsyncStorage } from '@react-native-async-storage/async-storage'
 import { useDispatch, useSelector } from 'react-redux'
-import { addAuth, addFollowedEvent, authSelector, AuthState } from '~redux/reducers/authReducer'
+import { addAuth, authSelector, AuthState } from '~redux/reducers/authReducer'
 import { SplashScreen } from '~screens'
-import userAPI from '~apis/userApi'
 import { UserHandle } from '~utils/UserHandlers'
 
 const AppRouters = () => {

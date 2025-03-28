@@ -2928,9 +2928,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-firebase/app@npm:^21.12.0":
-  version: 21.12.0
-  resolution: "@react-native-firebase/app@npm:21.12.0"
+"@react-native-firebase/app@npm:latest":
+  version: 21.12.3
+  resolution: "@react-native-firebase/app@npm:21.12.3"
   dependencies:
     firebase: 11.3.1
   peerDependencies:
@@ -2940,20 +2940,20 @@ __metadata:
   peerDependenciesMeta:
     expo:
       optional: true
-  checksum: 1ffaccba05f6fc5c2b0680a4215ee52985e5a6ef19268c0637966e35a2c34fc4542f12f9c982a10d9458ce97ed121433ed3be9bc9b05caf2129f40fe3dd510f1
+  checksum: 7f77a90720493bab2ccf072d1ccdd3b0e940770d561b17b222d01e681d3660d5172410ece66dbf809b3076aae15b712c86212ed9d5d95035071cc6ef53091bf4
   languageName: node
   linkType: hard
 
-"@react-native-firebase/messaging@npm:^21.12.0":
-  version: 21.12.0
-  resolution: "@react-native-firebase/messaging@npm:21.12.0"
+"@react-native-firebase/messaging@npm:latest":
+  version: 21.12.3
+  resolution: "@react-native-firebase/messaging@npm:21.12.3"
   peerDependencies:
-    "@react-native-firebase/app": 21.12.0
+    "@react-native-firebase/app": 21.12.3
     expo: ">=47.0.0"
   peerDependenciesMeta:
     expo:
       optional: true
-  checksum: 43b03a938e1289eba14a13888bc1fe42422d07a8d71d86bb22d03bc836c973d2bde13c1b5877bc27a8e7a6c7eaa1654ae20f5e27109e25bc1793cbcfa6dcfff9
+  checksum: 5444a3ae2f656d7391d681f43042ce68eae48e646a26829a94bac1869c10ddb96bd3a60ddbdbc63b04b113d9a9415166cfbb41dc14e1815bad2edcb3e7e16e66
   languageName: node
   linkType: hard
 
@@ -3949,8 +3949,8 @@ __metadata:
     "@fawazahmed/react-native-read-more": ^3.0.4
     "@react-native-async-storage/async-storage": ^2.0.0
     "@react-native-community/geolocation": ^3.4.0
-    "@react-native-firebase/app": ^21.12.0
-    "@react-native-firebase/messaging": ^21.12.0
+    "@react-native-firebase/app": latest
+    "@react-native-firebase/messaging": latest
     "@react-native-google-signin/google-signin": ^13.2.0
     "@react-native/babel-preset": 0.75.3
     "@react-native/eslint-config": 0.75.3

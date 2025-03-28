@@ -27,18 +27,31 @@ const LoginScreen = ({ navigation }: any) => {
           { email, password },
           'post'
         );
-        // Lưu thông tin vào Redux
-        dispatch(addAuth(res.data));
-        // Kiểm tra dữ liệu trước khi lưu
+
+        // ✅ Lấy đầy đủ thông tin từ API
+        const userData = {
+          id: res.data._id,
+          email: res.data.email,
+          fullName: res.data.fullName, // ✅ Đảm bảo fullName được lấy
+          accesstoken: res.data.accesstoken,
+          follow_events: res.data.follow_events || [],
+        };
+
+        // ✅ Đưa vào Redux Store
+        dispatch(addAuth(userData));
+
+        // ✅ Lưu AsyncStorage
         const authData = isRemember
-          ? JSON.stringify(res.data)  // Lưu toàn bộ dữ liệu nếu isRemember = true
-          : JSON.stringify({ email: email, accesstoken: res.data.accesstoken }); // Chỉ lưu email + accesstoken nếu không nhớ mật khẩu
+          ? JSON.stringify(userData)
+          : JSON.stringify({ email: email, accesstoken: res.data.accesstoken });
+
         await AsyncStorage.setItem('auth', authData);
       } catch (error: any) {
-        console.log('Error Response:', error.response?.data); // Log lỗi chi tiết từ API
+        console.log('Error Response:', error.response?.data);
       }
     }
   };
+
 
   return (
     <ContainerComponent isImageBackgroud isScroll>
