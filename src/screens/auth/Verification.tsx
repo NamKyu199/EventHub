@@ -96,7 +96,7 @@ const Verification = ({ navigation, route }: any) => {
               keyboardType='number-pad'
               value={val}
               ref={refs[index]}
-              style={styles.input}
+              style={[styles.input, { color: appColors.text }]} // Thêm màu đen
               placeholder='-'
               maxLength={1}
               onChangeText={(text) => handleChangeCode(text, index)}
@@ -113,7 +113,7 @@ const Verification = ({ navigation, route }: any) => {
           type='primary'
           iconFlex='right'
           icon={
-            <View style={[globalStyles.iconContainer, { backgroundColor: newCode.length !== 4 ? appColors.gray : appColors.primary }]}>  
+            <View style={[globalStyles.iconContainer, { backgroundColor: newCode.length !== 4 ? appColors.gray : appColors.primary }]}>
               <ArrowRight size={20} color={appColors.white} />
             </View>
           }
@@ -125,7 +125,7 @@ const Verification = ({ navigation, route }: any) => {
       <SectionComponent>
         <RowComponent justify='center'>
           <TouchableOpacity onPress={limit === 0 ? handleResendVerification : undefined}>
-            <TextComponent text='Gửi lại mã' flex={0} color={limit === 0 ? appColors.purple : appColors.gray} />
+            <TextComponent text='Gửi lại mã' flex={0} color={limit === 0 ? appColors.primary : appColors.gray} />
           </TouchableOpacity>
           <SpaceComponent width={5} />
           <TextComponent text={`00:${limit.toString().padStart(2, '0')}`} flex={0} color={appColors.link} />

@@ -30,11 +30,12 @@ const LoginScreen = ({ navigation }: any) => {
 
         // ✅ Lấy đầy đủ thông tin từ API
         const userData = {
-          id: res.data._id,
+          id: res.data.id,
           email: res.data.email,
           fullName: res.data.fullName, // ✅ Đảm bảo fullName được lấy
           accesstoken: res.data.accesstoken,
           follow_events: res.data.follow_events || [],
+          photo: res.data.photo,
         };
 
         // ✅ Đưa vào Redux Store

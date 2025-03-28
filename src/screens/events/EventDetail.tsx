@@ -192,7 +192,11 @@ const EventDetail = ({ navigation, route }: any) => {
                                 </View>
                             </RowComponent>
                             <SpaceComponent height={12} />
-                            <RowComponent>
+                            <RowComponent onPress={() => navigation.navigate('ProfileScreen', {
+                                params: {
+                                    id: item.authorId
+                                }
+                            })}>
                                 <Image source={appImage.AvatarDemo} style={{ width: 48, height: 48, borderRadius: 12, resizeMode: 'cover', marginHorizontal: 12 }} />
                                 <SpaceComponent width={12} />
                                 <View style={{ flex: 1, height: 48, justifyContent: 'space-around' }}>

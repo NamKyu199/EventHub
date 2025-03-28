@@ -5,7 +5,8 @@ export interface AuthState {
     email: string;
     accesstoken: string;
     follow_events: string[];
-    fullName?: string; // ✅ Thêm fullName vào interface
+    fullName?: string;
+    photo?: string; // ✅ Thêm trường photo
     fcmTokens?: string[];
 }
 
@@ -14,7 +15,8 @@ const initialState: AuthState = {
     email: '',
     accesstoken: '',
     follow_events: [],
-    fullName: '', // ✅ Khởi tạo mặc định
+    fullName: '',
+    photo: '', // ✅ Khởi tạo mặc định
 };
 
 const authSlice = createSlice({
@@ -26,7 +28,8 @@ const authSlice = createSlice({
         addAuth: (state, action) => {
             state.authData = {
                 ...action.payload,
-                fullName: action.payload.fullName || '', // ✅ Đảm bảo luôn có fullName
+                fullName: action.payload.fullName || '',
+                photo: action.payload.photo || '', // ✅ Đảm bảo luôn có photo
             };
         },
         removeAuth: (state) => {

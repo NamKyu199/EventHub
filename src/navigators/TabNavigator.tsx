@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React, { ReactNode } from 'react';
 import EventNavigator from './EventNavigator';
-import { AddNewScreen } from '../screens';
+import { AddNewScreen, EventsScreen, MapScreen, ProfileScreen } from '../screens';
 import ProfileNavigator from './ProfileNavigator';
 import { appColors } from '../constants/appColors';
 import {
@@ -13,10 +13,9 @@ import {
   User,
 } from 'iconsax-react-native';
 import { CircleComponent, TextComponent } from '../components';
-import { Platform, View } from 'react-native';
+import { Platform } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { globalStyles } from '../styles/globalStyles';
-import DrawerNavigator from './DrawerNavigator';
 import ExploreNavigator from './ExploerNavigator';
 import MapsNavigator from './MapsNavigator';
 
@@ -85,10 +84,10 @@ const TabNavigator = ({ navigation }: any) => {
         },
       })}>
       <Tab.Screen name="Explore" component={ExploreNavigator} />
-      <Tab.Screen name="Events" component={EventNavigator} />
+      <Tab.Screen name="Events" component={EventsScreen} />
       <Tab.Screen name="Add" component={AddNewScreen} />
-      <Tab.Screen name="Map" component={MapsNavigator} />
-      <Tab.Screen name="Profile" component={ProfileNavigator} />
+      <Tab.Screen name="Map" component={MapScreen} />
+      <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );
 };

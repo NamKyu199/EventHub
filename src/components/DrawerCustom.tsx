@@ -12,6 +12,7 @@ import { authSelector, AuthState, removeAuth } from '~redux/reducers/authReducer
 import AsyncStorage, { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import { HandleNotification } from '~utils/handleNotification';
 import { LoadingModal } from '~modals';
+import AvatarComponent from './AvatarComponent';
 
 const DrawerCustom = ({ navigation }: any) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -20,41 +21,6 @@ const DrawerCustom = ({ navigation }: any) => {
   const size = 20;
   const color = appColors.gray;
   const profileMenu = [
-    {
-      key: 'MyProfile',
-      title: 'My Profile',
-      icon: <User size={size} color={color} />,
-    },
-    {
-      key: 'Message',
-      title: 'Message',
-      icon: <Message2 size={size} color={color} />,
-    },
-    {
-      key: 'Calendar',
-      title: 'Calendar',
-      icon: <Calendar size={size} color={color} />,
-    },
-    {
-      key: 'Bookmark',
-      title: 'Bookmark',
-      icon: <Bookmark2 size={size} color={color} />,
-    },
-    {
-      key: 'ContactUs',
-      title: 'Contact Us',
-      icon: <Sms size={size} color={color} />,
-    },
-    {
-      key: 'Settings',
-      title: 'Settings',
-      icon: <Setting2 size={size} color={color} />,
-    },
-    {
-      key: 'HelpAndFAQs',
-      title: 'Help & FAQs',
-      icon: <MessageQuestion size={size} color={color} />,
-    },
     {
       key: 'SignOut',
       title: 'Sign Out',
@@ -87,13 +53,27 @@ const DrawerCustom = ({ navigation }: any) => {
     setIsLoading(false)
   };
 
+  const handleNavigation = (key: string) => {
+    switch (key) {
+      case 'SignOut':
+        handleSignOut();
+        break;
+      default:
+        console.log(key)
+        break;
+    }
+    navigation.closeDrawer();
+  }
+
   return (
     <View style={[localStyles.container]}>
-      <View>
-        <Image source={appImage.UserLogo} style={{ width: 52, height: 52, borderRadius: 100, marginBottom: 12 }} />
-        <TextComponent text={auth.fullName || "Người dùng"}
-          title size={18} />
-      </View>
+      <AvatarComponent
+        photoURL={auth.photo}
+        name={auth.fullName ? auth.fullName : auth.email}
+        size={52}
+      />
+      <SpaceComponent height={8} />
+      <TextComponent text={auth.fullName ? auth.fullName : auth.email} title size={18} />
       <FlatList
         showsVerticalScrollIndicator={false}
         data={profileMenu}
@@ -101,13 +81,8 @@ const DrawerCustom = ({ navigation }: any) => {
         renderItem={({ item, index }) => (
           <RowComponent
             styles={[localStyles.listItem]}
-            onPress={
-              item.key === 'SignOut'
-                ? () => handleSignOut()
-                : () => {
-                  navigation.closeDrawer();
-                }
-            }>
+            onPress={() => handleNavigation(item.key)}
+          >
             {item.icon}
             <TextComponent
               text={item.title}
@@ -116,16 +91,6 @@ const DrawerCustom = ({ navigation }: any) => {
           </RowComponent>
         )}
       />
-      <RowComponent justify='flex-start'>
-        <TouchableOpacity style={[globalStyles.button, { backgroundColor: '#00F8FF33', height: 'auto' }]}>
-          <Crown
-            size="22"
-            color="#00F8FF"
-          />
-          <SpaceComponent width={8} />
-          <TextComponent text='Nâng cấp Pro' color='#00F8FF' />
-        </TouchableOpacity>
-      </RowComponent>
       <LoadingModal visible={isLoading} />
     </View>
   )

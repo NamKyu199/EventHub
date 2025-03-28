@@ -67,8 +67,8 @@ export const globalStyles = StyleSheet.create({
     marginBottom: 16
   },
   nospaceCard: {
-    alignItems: 'center', 
-    justifyContent: 'center', 
+    alignItems: 'center',
+    justifyContent: 'center',
     padding: 0
   },
   inputcontainer: {
@@ -91,5 +91,9 @@ export const globalStyles = StyleSheet.create({
     paddingHorizontal: 14,
     color: appColors.text,
     letterSpacing: 1
+  },
+  center: {
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 });

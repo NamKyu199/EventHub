@@ -1,8 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
-import TabNavigator from './TabNavigator';
 import DrawerNavigator from './DrawerNavigator';
-import { EventDetail } from '~screens';
+import { EventDetail, ProfileScreen } from '~screens';
 
 
 const MainNavigator = () => {

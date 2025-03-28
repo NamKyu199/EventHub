@@ -1,3 +1,4 @@
+import AvatarComponent from "./AvatarComponent";
 import AvatarGroup from "./AvatarGroup";
 import ButtonComponent from "./ButtonComponent";
 import ButtonImagePicker from "./ButtonImagePicker";
@@ -33,5 +34,6 @@ export {
     DateTimePicker,
     DropdownPicker,
     ButtonImagePicker,
-    MakerCustom
+    MakerCustom,
+    AvatarComponent
 }

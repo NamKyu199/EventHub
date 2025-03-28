@@ -37,7 +37,7 @@ const ContainerComponent = (props: Props) => {
                             {back && (
                                 <TouchableOpacity
                                     onPress={() => navigation.goBack()}
-                                    style={{ marginRight: 12, flex: 1 }}
+                                    style={{ marginRight: 12}}
                                 >
                                     <ArrowLeft
                                         size="24"

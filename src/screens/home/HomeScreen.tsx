@@ -29,7 +29,6 @@ import axios from 'axios';
 import { AddressModel } from '~models/AddressModel';
 import eventAPI from '~apis/eventApi';
 import { EventModle } from '~models/EventModel';
-import { HandleNotification } from '~utils/handleNotification';
 
 const HomeScreen = ({ navigation }: any) => {
   const [currentLocation, setCurrentLocation] = useState<AddressModel>();
@@ -37,8 +36,6 @@ const HomeScreen = ({ navigation }: any) => {
   const [nearbyEvents, setNearbyEvents] = useState<EventModle[]>([]);
 
   useEffect(() => {
-    // Lấy quyền và FCM Token khi vào màn hình Home
-    HandleNotification.checkNotificationPermission();
     GeoLocation.getCurrentPosition(
       (position) => {
         if (position.coords) {
@@ -51,10 +48,15 @@ const HomeScreen = ({ navigation }: any) => {
       (error) => {
         console.error('Lỗi lấy vị trí:', error);
       },
-      { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+      {
+        enableHighAccuracy: true,
+        timeout: 5000,        // ⏱ Rút ngắn thời gian chờ (5 giây)
+        maximumAge: 0         // ♻️ Luôn lấy vị trí mới nhất, không dùng cache
+      }
     );
     getEvents();
   }, []);
+
 
   useEffect(() => {
     currentLocation && getEvents(currentLocation.position.lat, currentLocation.position.lng);
@@ -62,7 +64,7 @@ const HomeScreen = ({ navigation }: any) => {
 
 
   const reverseGeoCode = async ({ lat, long }: { lat: Number; long: Number }) => {
-    const api = `https://revgeocode.search.hereapi.com/v1/revgeocode?at=${lat},${long}&apikey=1lI5kNe7xVRqbwGlWQpct5_eQCDzWWPOdl5z-VWJHkA`
+    const api = `https://revgeocode.search.hereapi.com/v1/revgeocode?at=${lat},${long}&apikey=Emu9xnnh1DW0lbtTTQPDpUfPanKQfq4gSLHAKQPV6xE`
     try {
       const res = await axios.get(api);
       const items = res.data.items;
@@ -85,7 +87,7 @@ const HomeScreen = ({ navigation }: any) => {
 
   return (
     <View style={[globalStyles.container]}>
-      <StatusBar barStyle={'light-content'} />
+      <StatusBar barStyle='dark-content' />
 
       {/* Header Section */}
       <View

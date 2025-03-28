@@ -12,7 +12,8 @@ interface Props {
   userIds: string[]
 }
 
-const AvatarGroup = ({ size = 24, userIds }: Props) => {
+const AvatarGroup = (props: Props) => {
+  const { size, userIds } = props
   const displayedUsers = userIds.slice(0, 3); // Lấy tối đa 3 user
   const remainingUsers = userIds.length - displayedUsers.length; // Tính số lượng còn lại
 
@@ -23,8 +24,8 @@ const AvatarGroup = ({ size = 24, userIds }: Props) => {
           key={userId} // Dùng userId làm key thay vì index
           source={appImage.AvatarDemo} // Cần thay bằng ảnh user thực tế nếu có
           style={{
-            width: size,
-            height: size,
+            width: size ?? 24,
+            height: size ?? 24,
             borderRadius: 100,
             borderWidth: 1,
             borderColor: appColors.white,
@@ -37,7 +38,7 @@ const AvatarGroup = ({ size = 24, userIds }: Props) => {
           <SpaceComponent width={12} />
           <TextComponent
             text={`+ ${remainingUsers} going`}
-            size={12 + (size - 24) / 5}
+            size={12 + (size ? (size - 24) / 5 : 0)}
             color={appColors.primary}
             font={fontFamililes.semiBold}
           />

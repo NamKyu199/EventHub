@@ -13,8 +13,6 @@ export class UserHandle {
             } catch (error) {
                 console.log('Lỗi API:', error);
             }
-        } else {
-            console.log('Không có id');
         }
     };
 }
