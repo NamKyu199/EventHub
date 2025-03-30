@@ -26,39 +26,46 @@ const ContainerComponent = (props: Props) => {
     const headerComponent = () => {
         return (
             <View style={{ flex: 1, paddingTop: 40 }}>
-                {
-                    (title || back) && (
-                        <RowComponent styles={{
+                {(title || back) && (
+                    <RowComponent
+                        styles={{
                             paddingHorizontal: 16,
                             paddingVertical: 8,
                             minWidth: 48,
                             minHeight: 48,
-                        }}>
-                            {back && (
-                                <TouchableOpacity
-                                    onPress={() => navigation.goBack()}
-                                    style={{ marginRight: 12}}
-                                >
-                                    <ArrowLeft
-                                        size="24"
-                                        color={appColors.text} />
-                                </TouchableOpacity>
-                            )}
-                            {title ? (
-                                <TextComponent
-                                    text={title}
-                                    size={16}
-                                    font={fontFamililes.medium}
-                                    flex={1} />
-                            ) : (
-                                <></>
-                            )}
-                        </RowComponent>
-                    )}
+                        }}
+                    >
+                        {back && (
+                            <TouchableOpacity
+                                onPress={() => navigation.goBack()}
+                                style={{
+                                    marginRight: 12,
+                                    flex: title ? undefined : 1, // ✅ Chỉ thêm flex: 1 khi không có title
+                                }}
+                            >
+                                <ArrowLeft
+                                    size="24"
+                                    color={appColors.text}
+                                />
+                            </TouchableOpacity>
+                        )}
+                        {title ? (
+                            <TextComponent
+                                text={title}
+                                size={16}
+                                font={fontFamililes.medium}
+                                flex={1}
+                            />
+                        ) : (
+                            <></>
+                        )}
+                    </RowComponent>
+                )}
                 {returnContainer}
             </View>
-        )
-    }
+        );
+    };
+
 
     const returnContainer = isScroll ? (
         <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>{children}</ScrollView>

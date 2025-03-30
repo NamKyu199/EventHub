@@ -25,15 +25,10 @@ const InputComponent = (props: Props) => {
     const [isShowPassword, setIsShowPassword] = useState(isPassword) ?? false;
 
     return (
-        <View style={[globalStyles.inputcontainer,
-        {
-            alignItems: multiline ? 'flex-start' : 'center'
-        },
-            styles,
-        ]}>
+        <View style={[globalStyles.inputcontainer, styles]}>
             {affix ?? affix}
             <TextInput
-                style={[globalStyles.input, globalStyles.text, { paddingHorizontal: affix || suffix ? 14 : 0 }]}
+                style={[globalStyles.input, globalStyles.text, { paddingHorizontal: affix || suffix ? 14 : 0, textAlignVertical: multiline ? 'top' : 'auto', marginTop: multiline ? 10 : 0 }]}
                 value={value}
                 placeholder={placeholder ?? ''}
                 onChangeText={val => onChange(val)}

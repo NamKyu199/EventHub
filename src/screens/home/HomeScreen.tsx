@@ -4,7 +4,7 @@ import {
   SearchNormal1,
   Sort,
 } from 'iconsax-react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   FlatList,
   Image,
@@ -29,12 +29,20 @@ import axios from 'axios';
 import { AddressModel } from '~models/AddressModel';
 import eventAPI from '~apis/eventApi';
 import { EventModle } from '~models/EventModel';
+import { useFocusEffect } from '@react-navigation/native';
 
 const HomeScreen = ({ navigation }: any) => {
   const [currentLocation, setCurrentLocation] = useState<AddressModel>();
   const [events, setEvents] = useState<EventModle[]>([]);
   const [nearbyEvents, setNearbyEvents] = useState<EventModle[]>([]);
 
+  // ✅ Tự động load lại khi HomeScreen được focus
+  useFocusEffect(
+    useCallback(() => {
+      getEvents(); // Load sự kiện khi vào HomeScreen
+    }, [])
+  );
+  
   useEffect(() => {
     GeoLocation.getCurrentPosition(
       (position) => {

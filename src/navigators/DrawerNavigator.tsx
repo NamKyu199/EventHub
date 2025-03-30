@@ -1,8 +1,8 @@
 import React from 'react'
 import { createDrawerNavigator } from '@react-navigation/drawer'
-import ExploreNavigator from './ExploerNavigator';
 import DrawerCustom from '~components/DrawerCustom';
 import TabNavigator from './TabNavigator';
+import { ProfileScreen } from '~screens';
 
 const DrawerNavigator = () => {
 

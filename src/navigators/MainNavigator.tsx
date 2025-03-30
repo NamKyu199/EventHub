@@ -14,6 +14,7 @@ const MainNavigator = () => {
       }}>
       <Stack.Screen name="Main" component={DrawerNavigator} />
       <Stack.Screen name="EventDetail" component={EventDetail} />
+      <Stack.Screen name='ProfileScreen' component={ProfileScreen} />
     </Stack.Navigator>
   );
 };

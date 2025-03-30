@@ -47,14 +47,6 @@ const ButtonImagePicker = (props: Props) => {
         },
     ];
 
-    const renderItem = (item: { icon: ReactNode, key: string, title: string }) => (
-        <RowComponent styles={{ marginBottom: 20 }} onPress={() => handleChoiceImage(item.key)}>
-            {item.icon}
-            <SpaceComponent width={12} />
-            <TextComponent text={item.title} flex={1} font={fontFamililes.medium} />
-        </RowComponent>
-    );
-
     const handleChoiceImage = (key: string) => {
         switch (key) {
             case 'library':
@@ -86,7 +78,17 @@ const ButtonImagePicker = (props: Props) => {
                 >
                     <View style={{ marginVertical: 30, paddingHorizontal: 20 }}>
                         {
-                            choiceImages.map(item => renderItem(item))
+                            choiceImages.map(item => (
+                                <RowComponent
+                                    key={item.key} // Thêm key tại đây
+                                    styles={{ marginBottom: 20 }}
+                                    onPress={() => handleChoiceImage(item.key)}
+                                >
+                                    {item.icon}
+                                    <SpaceComponent width={12} />
+                                    <TextComponent text={item.title} flex={1} font={fontFamililes.medium} />
+                                </RowComponent>
+                            ))
                         }
                     </View>
                 </Modalize>

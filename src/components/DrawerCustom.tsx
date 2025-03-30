@@ -1,11 +1,9 @@
-import { View, Text, StyleSheet, Platform, StatusBar, TouchableOpacity, Image, FlatList } from 'react-native'
+import { View, StyleSheet, Platform, StatusBar, FlatList } from 'react-native'
 import React, { useState } from 'react'
 import RowComponent from './RowComponent';
 import TextComponent from './TextComponent';
-import { globalStyles } from '~styles/globalStyles';
-import { Bookmark2, Calendar, Crown, Logout, Message2, MessageQuestion, Setting2, Sms, User } from 'iconsax-react-native';
+import { Bookmark2, Logout } from 'iconsax-react-native';
 import SpaceComponent from './SpaceComponent';
-import { appImage } from '~constants/appImage';
 import { appColors } from '~constants/appColors';
 import { useDispatch, useSelector } from 'react-redux';
 import { authSelector, AuthState, removeAuth } from '~redux/reducers/authReducer';
@@ -21,6 +19,11 @@ const DrawerCustom = ({ navigation }: any) => {
   const size = 20;
   const color = appColors.gray;
   const profileMenu = [
+    {
+      key: 'MyProfile',
+      title: 'My Profile',
+      icon: <Bookmark2 size={size} color={color} />
+    },
     {
       key: 'SignOut',
       title: 'Sign Out',
@@ -58,6 +61,10 @@ const DrawerCustom = ({ navigation }: any) => {
       case 'SignOut':
         handleSignOut();
         break;
+      case 'MyProfile':
+        navigation.navigate('ProfileScreen', {
+          screen: 'ProfileScreen'
+        })
       default:
         console.log(key)
         break;

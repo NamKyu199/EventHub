@@ -1,27 +1,33 @@
-import { ActivityIndicator, StatusBar, Text, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { authSelector, AuthState } from '~redux/reducers/authReducer'
-import { AvatarComponent, ContainerComponent, RowComponent, SectionComponent, SpaceComponent, TextComponent } from '~components'
-import userAPI from '~apis/userApi'
-import { globalStyles } from '~styles/globalStyles'
+import { ActivityIndicator, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { authSelector, AuthState } from '~redux/reducers/authReducer';
+import { AvatarComponent, ContainerComponent, RowComponent, SectionComponent, SpaceComponent, TextComponent } from '~components';
+import userAPI from '~apis/userApi';
+import { globalStyles } from '~styles/globalStyles';
+import AboutProfile from './components/AboutProfile';
+import EditProfile from './components/EditProfile';
 
 const ProfileScreen = ({ navigation, route }: any) => {
+  const { id } = route.params || {};
   const dispatch = useDispatch();
   const auth: AuthState = useSelector(authSelector);
   const [isLoading, setIsLoading] = useState(false);
-  const [profile, setProfile] = useState<ProfileModel>();
+  const [profile, setProfile] = useState<ProfileModel | null>(null);
   const [userFollowers, setUserFollowers] = useState<string[]>([]);
-  const [profileId, setProfileId] = useState('');
+  const [profileId, setProfileId] = useState<string>('');
 
   useEffect(() => {
-    if (route.params) {
-      const { id } = route.params;
-      setProfile(id);
-    } else {
-      setProfileId(auth.id)
+    setProfileId(id ? `${id}` : `${auth.id}`);
+  }, [id, auth.id]);
+
+  // ✅ Kiểm tra params khi quay lại màn hình
+  useEffect(() => {
+    if (route.params?.updatedProfile) {
+      // Nếu có params updatedProfile, set lại profile
+      setProfile(route.params.updatedProfile);
     }
-  }, [route])
+  }, [route.params?.updatedProfile]);
 
   useEffect(() => {
     if (profileId) {
@@ -32,28 +38,37 @@ const ProfileScreen = ({ navigation, route }: any) => {
 
   const getProfile = async () => {
     const api = `/get-profile?uid=${profileId}`;
-
     setIsLoading(true);
     try {
       const res = await userAPI.HandleUser(api);
-      res && res.data && setProfile(res.data)
-      setIsLoading(false)
+      if (res?.data) {
+        setProfile(res.data);
+      } else {
+        setProfile(null);
+      }
     } catch (error) {
-      console.log('Lỗi không thể lấy thông tin Profile', error);
+      console.log('❌ Lỗi không thể lấy thông tin Profile', error);
+      setProfile(null);
     } finally {
       setIsLoading(false);
     }
   };
 
   const getFollowersByUid = async () => {
-    const api = `/get-followers?uid=${profileId}`
+    const api = `/get-followers?uid=${profileId}`;
     try {
-      const res = await userAPI.HandleUser(api)
-      setUserFollowers(res.data)
+      const res = await userAPI.HandleUser(api);
+      setUserFollowers(res.data);
     } catch (error) {
-      console.log('Lỗi không thể lấy followers từ API !!!')
+      console.log('❌ Lỗi không thể lấy followers từ API');
     }
-  }
+  };
+
+  const renderProfileScreen = () => {
+    if (!id) return <EditProfile profile={profile} />;
+    if (`${id}` === `${auth.id}`) return <EditProfile profile={profile} />;
+    return <AboutProfile />;
+  };
 
   return (
     <ContainerComponent back title='Profile'>
@@ -65,12 +80,12 @@ const ProfileScreen = ({ navigation, route }: any) => {
             <RowComponent>
               <AvatarComponent
                 photoURL={profile.photoUrl}
-                name={profile.fullName ? profile.fullName : profile.email}
+                name={profile.fullName || profile.email}
                 size={120}
               />
             </RowComponent>
             <SpaceComponent height={16} />
-            <TextComponent text={profile.fullName ? profile.fullName : profile.email} title size={24} styles={{ textAlign: 'center' }} />
+            <TextComponent text={profile.fullName || profile.email} title size={24} styles={{ textAlign: 'center' }} />
             <SpaceComponent height={26} />
             <RowComponent>
               <View style={[globalStyles.center, { flex: 1 }]}>
@@ -83,15 +98,15 @@ const ProfileScreen = ({ navigation, route }: any) => {
               </View>
             </RowComponent>
           </SectionComponent>
-          {
 
-          }
+          {/* ✅ Điều kiện hiển thị */}
+          {renderProfileScreen()}
         </>
       ) : (
         <TextComponent text='Profile not found' />
       )}
     </ContainerComponent>
-  )
-}
+  );
+};
 
 export default ProfileScreen;

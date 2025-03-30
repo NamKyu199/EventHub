@@ -21,7 +21,6 @@ const EventDetail = ({ navigation, route }: any) => {
     const { item }: { item: EventModle } = route.params
     const dispatch = useDispatch();
     const auth: AuthState = useSelector(authSelector);
-    console.log('item', auth);
     const [isLoading, setIsLoading] = useState(false);
     const [followers, setFollowers] = useState<string[]>([]);
 
@@ -193,15 +192,15 @@ const EventDetail = ({ navigation, route }: any) => {
                             </RowComponent>
                             <SpaceComponent height={12} />
                             <RowComponent onPress={() => navigation.navigate('ProfileScreen', {
-                                params: {
-                                    id: item.authorId
-                                }
-                            })}>
+                                id: item.authorIds
+                            })
+                            }
+                            >
                                 <Image source={appImage.AvatarDemo} style={{ width: 48, height: 48, borderRadius: 12, resizeMode: 'cover', marginHorizontal: 12 }} />
                                 <SpaceComponent width={12} />
                                 <View style={{ flex: 1, height: 48, justifyContent: 'space-around' }}>
-                                    <TextComponent text='Son tung MTP' font={fontFamililes.medium} size={16} styles={{ marginTop: -10 }} />
-                                    <TextComponent text={auth.email} color={appColors.gray} styles={{ marginTop: -10 }} />
+                                    <TextComponent text={`${item.authorName}`} font={fontFamililes.medium} size={16} styles={{ marginTop: -10 }} />
+                                    <TextComponent text={`${item.authorEmail}`} color={appColors.gray} styles={{ marginTop: -10 }} />
                                 </View>
                             </RowComponent>
                         </SectionComponent>

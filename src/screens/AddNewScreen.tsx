@@ -13,7 +13,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { EventModle } from '~models/EventModel';
 import eventAPI from '~apis/eventApi';
 
-
 const initValues = {
   title: '',
   description: '',
@@ -42,6 +41,7 @@ const AddNewScreen = ({ navigation }: any) => {
   const [usersSelect, setUsersSelect] = useState<SelectModel[]>([]);
   const [fileSelected, setFileSelected] = useState<any>();
   const [errorMessage, setErrorMessage] = useState<string[]>([]);
+  const [selectedUsers, setSelectedUsers] = useState<any[]>([]); // Thêm state mới
 
   useEffect(() => {
     handleGetAllUsers();
@@ -51,6 +51,11 @@ const AddNewScreen = ({ navigation }: any) => {
     const mess = Validate.EventValidation(eventData);
     setErrorMessage(mess)
   }, [eventData]);
+
+  // Lắng nghe thay đổi của selectedUsers để cập nhật eventData
+  useEffect(() => {
+    handleChangeValue('users', selectedUsers);
+  }, [selectedUsers]);
 
   const handleGetAllUsers = async () => {
     const api = `/get-all`;
@@ -92,14 +97,20 @@ const AddNewScreen = ({ navigation }: any) => {
       if (newPath) savedPhotoPath = newPath;
     }
 
-    const newEventData = { ...eventData, photoUrl: savedPhotoPath };
+    const newEventData = {
+      ...eventData,
+      photoUrl: savedPhotoPath,
+      authorIds: auth.id,
+      authorName: auth.fullName,
+      authorEmail: auth.email
+    };
 
     await AsyncStorage.setItem("savedEvent", JSON.stringify(newEventData));
     navigation.navigate('Explore', {
       screen: 'HomeScreen'
-    })
+    });
 
-    const response = await eventAPI.HandleEvent(`/add-new`, newEventData, 'post');
+    await eventAPI.HandleEvent(`/add-new`, newEventData, 'post');
   };
 
   const handleFileSelected = (val: ImageOrVideo) => {
@@ -157,13 +168,16 @@ const AddNewScreen = ({ navigation }: any) => {
           <DateTimePicker label='End at:' type='time' onSelect={val => handleChangeValue('endAt', val)} selected={eventData.endAt} />
         </RowComponent>
         <DateTimePicker label='Date' type='date' onSelect={val => handleChangeValue('date', val)} selected={eventData.date} />
+        
+        {/* Sửa lỗi DropdownPicker */}
         <DropdownPicker
           label='Invited users'
           values={usersSelect}
-          onSelect={(val) => handleChangeValue('users', Array.isArray(val) ? val : [val])}
-          selected={eventData.users}
+          onSelect={(val) => setSelectedUsers(Array.isArray(val) ? val : [val])}
+          selected={selectedUsers}
           mutible
         />
+
         <InputComponent
           placeholder='Title Address'
           value={eventData.locationTitle}
@@ -182,19 +196,18 @@ const AddNewScreen = ({ navigation }: any) => {
           onChange={val => handleChangeValue('price', val)}
         />
       </SectionComponent>
-      {
-        errorMessage.length > 0 &&
+      {errorMessage.length > 0 && (
         <SectionComponent>
-          {errorMessage.map(mess =>
+          {errorMessage.map(mess => (
             <TextComponent
               text={mess}
               key={mess}
               color={appColors.danger}
               styles={{ marginBottom: 12 }}
             />
-          )}
+          ))}
         </SectionComponent>
-      }
+      )}
       <SectionComponent>
         <ButtonComponent
           disable={errorMessage.length > 0}
@@ -208,7 +221,3 @@ const AddNewScreen = ({ navigation }: any) => {
 };
 
 export default AddNewScreen;
-
-function alert(arg0: string) {
-  throw new Error('Function not implemented.');
-}

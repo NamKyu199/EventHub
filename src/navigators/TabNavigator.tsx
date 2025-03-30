@@ -1,14 +1,12 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React, { ReactNode } from 'react';
 import EventNavigator from './EventNavigator';
-import { AddNewScreen, EventsScreen, MapScreen, ProfileScreen } from '../screens';
+import { AddNewScreen } from '../screens';
 import ProfileNavigator from './ProfileNavigator';
 import { appColors } from '../constants/appColors';
 import {
   AddSquare,
   Calendar,
-  Home2,
-  Iost,
   Location,
   User,
 } from 'iconsax-react-native';
@@ -32,6 +30,7 @@ const TabNavigator = ({ navigation }: any) => {
           alignItems: 'center',
           backgroundColor: appColors.white,
         },
+        tabBarHideOnKeyboard: true,
         tabBarIcon: ({ focused, color, size }) => {
           let icon: ReactNode;
           color = focused ? appColors.primary : appColors.gray5;
@@ -84,10 +83,10 @@ const TabNavigator = ({ navigation }: any) => {
         },
       })}>
       <Tab.Screen name="Explore" component={ExploreNavigator} />
-      <Tab.Screen name="Events" component={EventsScreen} />
+      <Tab.Screen name="Events" component={EventNavigator} />
       <Tab.Screen name="Add" component={AddNewScreen} />
-      <Tab.Screen name="Map" component={MapScreen} />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
+      <Tab.Screen name="Map" component={MapsNavigator} />
+      <Tab.Screen name="Profile" component={ProfileNavigator} />
     </Tab.Navigator>
   );
 };

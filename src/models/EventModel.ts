@@ -18,6 +18,9 @@ export interface EventModle {
   updatedAt: string
   users: string[]
   followers?: string[]
+  authorIds: string,
+  authorName: string,
+  authorEmail: string
 }
 export interface Position {
   _id: string
