@@ -5,14 +5,16 @@ import { AvatarComponent, ButtonComponent, ButtonImagePicker, ContainerComponent
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import userAPI from '~apis/userApi';
 import { LoadingModal } from '~modals';
-import appImage from '~constants/appImage';
+import { useDispatch } from 'react-redux';
+import { addAuth } from '~redux/reducers/authReducer';
 
 const EditProfileScreen = ({ navigation, route }: any) => {
-
     const { profile }: { profile: ProfileModel } = route.params;
     const [fileSelected, setFileSelected] = useState<any>();
     const [profileData, setProfileData] = useState<ProfileModel>(profile);
     const [isLoading, setIsLoading] = useState(false);
+    const dispatch = useDispatch();
+
 
     const handleFileSelected = (val: ImageOrVideo) => {
         setFileSelected(val);
@@ -58,16 +60,23 @@ const EditProfileScreen = ({ navigation, route }: any) => {
                 }
             }
             const newProfileData = {
-                // ...profileData,
+                ...profileData,
                 photoUrl: savedPhotoPath,
                 fullName: profileData.fullName,
                 bio: profileData.bio
             };
+
             await AsyncStorage.setItem("savedProfile", JSON.stringify(newProfileData));
-            console.log(newProfileData)
+
+            // ✅ Thêm dispatch để lưu vào redux
+            dispatch(addAuth({
+                ...profile,
+                photo: savedPhotoPath,
+                fullName: profileData.fullName,
+            }));
+
             await userAPI.HandleUser(`/update-profile?uid=${profile.uid}`, newProfileData, 'put');
-            // Truyền params khi quay lại màn trước
-            navigation.navigate('ProfileScreen',{
+            navigation.navigate('ProfileScreen', {
                 params: { updatedProfile: newProfileData }
             });
         } catch (error) {
@@ -76,6 +85,7 @@ const EditProfileScreen = ({ navigation, route }: any) => {
             setIsLoading(false);
         }
     };
+
 
     return (
         <ContainerComponent isScroll back title={profile.fullName}>

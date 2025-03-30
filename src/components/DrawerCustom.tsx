@@ -6,7 +6,7 @@ import { Bookmark2, Logout } from 'iconsax-react-native';
 import SpaceComponent from './SpaceComponent';
 import { appColors } from '~constants/appColors';
 import { useDispatch, useSelector } from 'react-redux';
-import { authSelector, AuthState, removeAuth } from '~redux/reducers/authReducer';
+import { authSelector, AuthState, removeAuth, addAuth } from '~redux/reducers/authReducer';
 import AsyncStorage, { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import { HandleNotification } from '~utils/handleNotification';
 import { LoadingModal } from '~modals';
@@ -64,13 +64,20 @@ const DrawerCustom = ({ navigation }: any) => {
       case 'MyProfile':
         navigation.navigate('ProfileScreen', {
           screen: 'ProfileScreen'
-        })
+        });
+
+        // ✅ Thêm dispatch để cập nhật Redux khi vào màn MyProfile
+        dispatch(addAuth({
+          ...auth, // ✅ Đảm bảo truyền đầy đủ
+        }));
+        break;
       default:
-        console.log(key)
+        console.log(key);
         break;
     }
     navigation.closeDrawer();
-  }
+  };
+
 
   return (
     <View style={[localStyles.container]}>

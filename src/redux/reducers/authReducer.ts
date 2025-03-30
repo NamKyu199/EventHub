@@ -27,9 +27,10 @@ const authSlice = createSlice({
     reducers: {
         addAuth: (state, action) => {
             state.authData = {
-                ...action.payload,
-                fullName: action.payload.fullName || '',
-                photo: action.payload.photo || '', // ✅ Đảm bảo luôn có photo
+                ...state.authData, // ✅ Giữ lại dữ liệu cũ
+                ...action.payload, // ✅ Ghi đè dữ liệu mới
+                fullName: action.payload.fullName || state.authData.fullName,
+                photo: action.payload.photo || state.authData.photo,
             };
         },
         removeAuth: (state) => {

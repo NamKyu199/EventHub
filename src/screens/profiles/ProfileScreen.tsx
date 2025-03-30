@@ -1,7 +1,7 @@
 import { ActivityIndicator, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { authSelector, AuthState } from '~redux/reducers/authReducer';
+import { addAuth, authSelector, AuthState } from '~redux/reducers/authReducer';
 import { AvatarComponent, ContainerComponent, RowComponent, SectionComponent, SpaceComponent, TextComponent } from '~components';
 import userAPI from '~apis/userApi';
 import { globalStyles } from '~styles/globalStyles';
@@ -79,13 +79,18 @@ const ProfileScreen = ({ navigation, route }: any) => {
           <SectionComponent>
             <RowComponent>
               <AvatarComponent
-                photoURL={profile.photoUrl}
-                name={profile.fullName || profile.email}
+                photoURL={profile?.photoUrl}
+                name={profile?.fullName || profile?.email || "Unknown User"}
                 size={120}
               />
             </RowComponent>
             <SpaceComponent height={16} />
-            <TextComponent text={profile.fullName || profile.email} title size={24} styles={{ textAlign: 'center' }} />
+            <TextComponent
+              text={profile?.fullName || profile?.email || "Unknown User"}
+              title
+              size={24}
+              styles={{ textAlign: 'center' }}
+            />
             <SpaceComponent height={26} />
             <RowComponent>
               <View style={[globalStyles.center, { flex: 1 }]}>
