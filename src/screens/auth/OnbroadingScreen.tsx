@@ -63,8 +63,9 @@ const OnbroadingScreen = ({ navigation }: any) => {
                     if (index > 0) {
                         swiperRef.current.scrollBy(-1, true); // Go to the previous slide with animation
                     }
+                    navigation.navigate('LoginScreen')
                 }}>
-                    <TextComponent text='Ship' color={appColors.gray2} font={fontFamililes.medium}/>
+                    <TextComponent text='Ship' color={appColors.gray2} font={fontFamililes.medium} />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => {
                     if (index < 2) {
@@ -73,7 +74,7 @@ const OnbroadingScreen = ({ navigation }: any) => {
                         navigation.navigate('LoginScreen'); // Navigate to LoginScreen on the last slide
                     }
                 }}>
-                    <TextComponent text='Next' color={appColors.white} font={fontFamililes.medium}/>
+                    <TextComponent text='Next' color={appColors.white} font={fontFamililes.medium} />
                 </TouchableOpacity>
             </View>
         </View>

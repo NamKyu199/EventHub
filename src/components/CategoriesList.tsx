@@ -6,16 +6,10 @@ import { appColors } from '../constants/appColors';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { ChefFork, Food } from '~constants/svg';
 import { TagComponent, } from '~components';
+import { Category } from '~models/Category';
 
 interface Props {
     isColor?: boolean;
-}
-
-interface Category {
-    key: string;
-    title: string;
-    icon: ReactNode;
-    iconColor: string;
 }
 
 const CategoriesList = (props: Props) => {

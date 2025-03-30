@@ -5,7 +5,7 @@ interface ProfileModel {
     following: string[];
     followers: string[];
     fullName: string;
-    interest: string[];
+    interests: string[];
     photoUrl: string;
     updateAt: string;
     uid: string

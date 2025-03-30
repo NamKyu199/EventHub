@@ -16,17 +16,18 @@ interface Props {
     title?: string,
     children: ReactNode,
     back?: boolean,
+    right?: ReactNode,
 }
 
 const ContainerComponent = (props: Props) => {
-    const { isImageBackgroud, isScroll, title, children, back } = props;
+    const { isImageBackgroud, isScroll, title, children, back, right } = props;
 
     const navigation: any = useNavigation();
 
     const headerComponent = () => {
         return (
             <View style={{ flex: 1, paddingTop: 40 }}>
-                {(title || back) && (
+                {(title || back || right) && (
                     <RowComponent
                         styles={{
                             paddingHorizontal: 16,
@@ -59,6 +60,7 @@ const ContainerComponent = (props: Props) => {
                         ) : (
                             <></>
                         )}
+                        {right && right}
                     </RowComponent>
                 )}
                 {returnContainer}
