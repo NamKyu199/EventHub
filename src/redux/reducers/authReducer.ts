@@ -8,6 +8,7 @@ export interface AuthState {
     fullName?: string;
     photo?: string; // ✅ Thêm trường photo
     fcmTokens?: string[];
+    following?: string[];
 }
 
 const initialState: AuthState = {
@@ -39,10 +40,13 @@ const authSlice = createSlice({
         addFollowedEvent: (state, action) => {
             state.authData.follow_events = action.payload;
         },
+        updateFollowing: (state, action) => {
+            state.authData.following = action.payload;
+        }
     }
 });
 
 export const authReducer = authSlice.reducer;
-export const { addAuth, removeAuth, addFollowedEvent } = authSlice.actions;
+export const { addAuth, removeAuth, addFollowedEvent, updateFollowing } = authSlice.actions;
 
 export const authSelector = (state: any) => state.authReducer.authData;

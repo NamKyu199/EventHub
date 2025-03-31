@@ -19,37 +19,47 @@ const ProfileScreen = ({ navigation, route }: any) => {
   const [userFollowers, setUserFollowers] = useState<string[]>([]);
   const profileId = id || auth.id;
 
-  // ✅ Lấy profile và followers đồng thời
-  useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
-    const fetchData = async () => {
-      setIsLoading(true);
-      try {
-        const [profileRes, followersRes] = await Promise.all([
-          userAPI.HandleUser(`/get-profile?uid=${profileId}`),
-          userAPI.HandleUser(`/get-followers?uid=${profileId}`)
-        ]);
-        setProfile(profileRes?.data || null);
-        setUserFollowers(followersRes?.data || []);
-      } catch (error) {
-        console.log('❌ Lỗi tải dữ liệu:', error);
-        setProfile(null);
-      } finally {
-        // ✅ Hiển thị loading sau 200ms
-        timeoutId = setTimeout(() => setIsLoading(false), 200);
-      }
-    };
-
-    fetchData();
-    return () => clearTimeout(timeoutId);
-  }, [profileId]);
-
   // ✅ Khi quay lại màn hình, cập nhật profile nếu cần
   useEffect(() => {
     if (route.params?.updatedProfile) {
       setProfile(route.params.updatedProfile);
     }
   }, [route.params?.updatedProfile]);
+
+  useEffect(() => {
+    if (profileId) {
+      getProfile();
+      getFollowersByUid();
+    }
+  }, [profileId]);
+
+  const getProfile = async () => {
+    const api = `/get-profile?uid=${profileId}`;
+    setIsLoading(true);
+    try {
+      const res = await userAPI.HandleUser(api);
+      if (res?.data) {
+        setProfile(res.data);
+      } else {
+        setProfile(null);
+      }
+    } catch (error) {
+      console.log('❌ Lỗi không thể lấy thông tin Profile', error);
+      setProfile(null);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const getFollowersByUid = async () => {
+    const api = `/get-followers?uid=${profileId}`;
+    try {
+      const res = await userAPI.HandleUser(api);
+      setUserFollowers(res.data);
+    } catch (error) {
+      console.log('❌ Lỗi không thể lấy followers từ API');
+    }
+  };
 
   // ✅ Component hiển thị thông tin Profile
   const ProfileHeader = () => (
@@ -95,7 +105,7 @@ const ProfileScreen = ({ navigation, route }: any) => {
   const renderProfileScreen = () => {
     return !id || `${id}` === `${auth.id}`
       ? <EditProfile profile={profile} />
-      : <AboutProfile />;
+      : <AboutProfile profile={profile} />;
   };
 
   return (
