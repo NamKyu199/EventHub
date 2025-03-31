@@ -1,6 +1,6 @@
 import { Image, ImageBackground, Platform, ScrollView, StatusBar, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { AvatarGroup, ButtonComponent, CardComponent, RowComponent, SectionComponent, SpaceComponent, TabBarComponent, TextComponent } from '~components'
+import { AvatarGroup, ButtonComponent, CardComponent, RowComponent, SectionComponent, SpaceComponent, TabBarComponent, TagComponent, TextComponent } from '~components'
 import appImage from '~constants/appImage'
 import { appInfo } from '~constants/appInfos'
 import { ArrowLeft, ArrowRight, Calendar, Location, Save2 } from 'iconsax-react-native'
@@ -10,11 +10,13 @@ import LinearGradient from 'react-native-linear-gradient';
 import { EventModle } from '~models/EventModel'
 import { fontFamililes } from '~constants/fontFamililes'
 import { useDispatch, useSelector } from 'react-redux'
-import { addFollowedEvent, authSelector, AuthState } from '~redux/reducers/authReducer'
+import { addFollowedEvent, authSelector, AuthState, updateFollowing } from '~redux/reducers/authReducer'
 import eventAPI from '~apis/eventApi'
 import { LoadingModal } from '~modals'
 import { UserHandle } from '~utils/UserHandlers'
 import { DateTime } from '~utils/DateTime'
+import userAPI from '~apis/userApi'
+import ModalInvite from '~modals/ModalInvite'
 
 
 const EventDetail = ({ navigation, route }: any) => {
@@ -23,6 +25,7 @@ const EventDetail = ({ navigation, route }: any) => {
     const auth: AuthState = useSelector(authSelector);
     const [isLoading, setIsLoading] = useState(false);
     const [followers, setFollowers] = useState<string[]>([]);
+    const [isVisibleModalInvite, setIsVisibleModalInvite] = useState(false);
 
     useEffect(() => {
         item && getFollowersById();
@@ -68,6 +71,25 @@ const EventDetail = ({ navigation, route }: any) => {
             await UserHandle.getFollowersById(auth.id, dispatch);
         } catch (error) {
             console.log('Error update Followers:', error);
+        }
+    };
+
+    const handleToggleFollowing = async (id: string) => {
+        const api = `/update-following`;
+        setIsLoading(true);
+
+        try {
+            const res = await userAPI.HandleUser(api, {
+                uid: auth.id,
+                authorId: id,
+            }, 'put');
+
+            dispatch(updateFollowing(res.data));
+            console.log("✅ API Response:", res);
+        } catch (error) {
+            console.log("❌ API Error:", error);
+        } finally {
+            setIsLoading(false); // Đảm bảo luôn tắt loading
         }
     };
 
@@ -132,6 +154,7 @@ const EventDetail = ({ navigation, route }: any) => {
                                     >
                                         <AvatarGroup size={36} userIds={item.users} />
                                         <TouchableOpacity
+                                            onPress={() => setIsVisibleModalInvite(true)}
                                             style={[
                                                 globalStyles.button,
                                                 { backgroundColor: appColors.primary, paddingHorizontal: 20, paddingVertical: 6 }
@@ -143,7 +166,12 @@ const EventDetail = ({ navigation, route }: any) => {
                                 </View>
                             ) : (
                                 <>
-                                    <ButtonComponent text='Intive' type='primary' styles={{ borderRadius: 100 }} />
+                                    <ButtonComponent
+                                        onPress={() => setIsVisibleModalInvite(true)}
+                                        text='Invive'
+                                        type='primary'
+                                        styles={{ borderRadius: 100 }}
+                                    />
                                 </>
                             )
                         }
@@ -196,12 +224,39 @@ const EventDetail = ({ navigation, route }: any) => {
                             })
                             }
                             >
-                                <Image source={appImage.AvatarDemo} style={{ width: 48, height: 48, borderRadius: 12, resizeMode: 'cover', marginHorizontal: 12 }} />
+                                <Image
+                                    source={
+                                        item.photoUrl
+                                            ? { uri: item.authorPhotoUrl }  // Sử dụng object với key 'uri'
+                                            : appImage.AvatarDemo
+                                    }
+                                    style={{
+                                        width: 48,
+                                        height: 48,
+                                        borderRadius: 12,
+                                        resizeMode: 'cover',
+                                        marginHorizontal: 12
+                                    }}
+                                />
                                 <SpaceComponent width={12} />
                                 <View style={{ flex: 1, height: 48, justifyContent: 'space-around' }}>
                                     <TextComponent text={`${item.authorName}`} font={fontFamililes.medium} size={16} styles={{ marginTop: -10 }} />
                                     <TextComponent text={`${item.authorEmail}`} color={appColors.gray} styles={{ marginTop: -10 }} />
                                 </View>
+                                <TagComponent
+                                    lable={
+                                        auth.following && auth.following.includes(item.authorIds)
+                                            ? 'Un Follow'
+                                            : 'Follow'
+                                    }
+                                    onPress={() => handleToggleFollowing(item.authorIds)}
+                                    styles={{
+                                        backgroundColor: `${appColors.primary}20`,
+                                        borderRadius: 12,
+                                    }}
+                                    textColor={appColors.primary}
+                                    textStyle={{ fontFamily: fontFamililes.regular }}
+                                />
                             </RowComponent>
                         </SectionComponent>
                         <TabBarComponent title='About Event' />
@@ -237,7 +292,7 @@ const EventDetail = ({ navigation, route }: any) => {
             </LinearGradient>
 
             <LoadingModal visible={isLoading} />
-
+            <ModalInvite visible={isVisibleModalInvite} onClose={() => setIsVisibleModalInvite(false)} />
         </View>
     )
 }

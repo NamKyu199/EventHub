@@ -102,7 +102,8 @@ const AddNewScreen = ({ navigation }: any) => {
       photoUrl: savedPhotoPath,
       authorIds: auth.id,
       authorName: auth.fullName,
-      authorEmail: auth.email
+      authorEmail: auth.email,
+      authorPhotoUrl: auth.photo,
     };
 
     await AsyncStorage.setItem("savedEvent", JSON.stringify(newEventData));
@@ -168,7 +169,7 @@ const AddNewScreen = ({ navigation }: any) => {
           <DateTimePicker label='End at:' type='time' onSelect={val => handleChangeValue('endAt', val)} selected={eventData.endAt} />
         </RowComponent>
         <DateTimePicker label='Date' type='date' onSelect={val => handleChangeValue('date', val)} selected={eventData.date} />
-        
+
         {/* Sửa lỗi DropdownPicker */}
         <DropdownPicker
           label='Invited users'

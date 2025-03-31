@@ -21,6 +21,7 @@ export interface EventModle {
   authorIds: string,
   authorName: string,
   authorEmail: string
+  authorPhotoUrl: string
 }
 export interface Position {
   _id: string

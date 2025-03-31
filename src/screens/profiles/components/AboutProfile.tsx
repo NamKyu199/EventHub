@@ -20,11 +20,7 @@ const AboutProfile = (props: Props) => {
     const auth = useSelector(authSelector);
     const dispatch = useDispatch();
     const [tabSelected, setTabSelected] = useState('about');
-    const [idLoading, setIdLoading] = useState(false);
-
-    useEffect(() => {
-        handleToggleFollowing();
-    }, [profile]);
+    const [isLoading, setIsLoading] = useState(false);
 
     const tabs = [
         {
@@ -70,7 +66,7 @@ const AboutProfile = (props: Props) => {
         }
 
         const api = `/update-following`;
-        setIdLoading(true);
+        setIsLoading(true);
 
         try {
             const res = await userAPI.HandleUser(api, {
@@ -83,7 +79,7 @@ const AboutProfile = (props: Props) => {
         } catch (error) {
             console.log("❌ API Error:", error);
         } finally {
-            setIdLoading(false); // Đảm bảo luôn tắt loading
+            setIsLoading(false); // Đảm bảo luôn tắt loading
         }
     };
 
@@ -179,7 +175,7 @@ const AboutProfile = (props: Props) => {
                 </RowComponent>
                 {renderTabContent(tabSelected)}
             </SectionComponent>
-            <LoadingModal visible={idLoading} />
+            <LoadingModal visible={isLoading} />
         </>
     )
 }
