@@ -42,7 +42,7 @@ const HomeScreen = ({ navigation }: any) => {
       getEvents(); // Load sự kiện khi vào HomeScreen
     }, [])
   );
-  
+
   useEffect(() => {
     GeoLocation.getCurrentPosition(
       (position) => {
@@ -119,6 +119,7 @@ const HomeScreen = ({ navigation }: any) => {
                   color={appColors.white2}
                   size={12}
                 />
+
                 <MaterialIcons
                   name="arrow-drop-down"
                   size={18}
@@ -138,7 +139,14 @@ const HomeScreen = ({ navigation }: any) => {
 
             <CircleComponent color="#524CE0" size={36}>
               <View>
-                <Notification size={18} color={appColors.white} />
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('NotificationScreen')}
+                >
+                  <Notification
+                    size={18}
+                    color={appColors.white}
+                  />
+                </TouchableOpacity>
                 <View
                   style={{
                     backgroundColor: '#02E9FE',
@@ -219,7 +227,7 @@ const HomeScreen = ({ navigation }: any) => {
         style={{ flex: 1, paddingTop: 40 }} // Tạo khoảng cách với CategoriesList
       >
         <SectionComponent>
-          <TabBarComponent title='Upcoming Events' onPress={() => { }} />
+          <TabBarComponent title='Upcoming Events' onPress={() => navigation.navigate('ExploreEvents')} />
           <FlatList
             showsHorizontalScrollIndicator={false}
             horizontal

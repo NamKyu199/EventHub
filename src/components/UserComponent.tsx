@@ -37,7 +37,7 @@ const UserComponent = (props: Props) => {
 
     return (
         profile && (
-            <RowComponent onPress={onPress}>
+            <RowComponent onPress={onPress} styles={{marginVertical:12}}>
                 <Image
                     source={profile?.photoUrl ? { uri: profile.photoUrl } : appImage.AvatarDemo}
                     style={{ width: 48, height: 48, borderRadius: 12, resizeMode: 'cover', marginHorizontal: 12 }}

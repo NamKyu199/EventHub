@@ -8,14 +8,17 @@ import { fontFamililes } from '~constants/fontFamililes';
 import { SearchNormal1, TickCircle } from 'iconsax-react-native';
 import { appColors } from '~constants/appColors';
 import { Alert, Share, View } from 'react-native';
+import userAPI from '~apis/userApi';
 
 interface Props {
     visible: boolean,
     onClose: () => void;
+    eventId: string,
+    creatorId: string,
 }
 
 const ModalInvite = (props: Props) => {
-    const { visible, onClose } = props
+    const { visible, onClose, eventId, creatorId } = props
     const auth: AuthState = useSelector(authSelector);
     const modalizeRef = useRef<Modalize>();
     const [friendIds, setfriendIds] = useState<string[]>([]);
@@ -67,6 +70,26 @@ const ModalInvite = (props: Props) => {
         }
     };
 
+    const handleSendInviteNotification = async () => {
+        if (userSelected.length > 0) {
+            const api = `/send-invite`;
+            console.log("📤 Đang gửi lời mời đến:", userSelected);
+
+            try {
+                const response = await userAPI.HandleUser(api, {
+                    ids: userSelected,
+                    eventId: eventId,
+                    creatorId: creatorId // Thêm creatorId vào payload
+                }, 'post');
+                console.log("✅ Gửi lời mời thành công:", response.data);
+            } catch (error) {
+                console.log("❌ Lỗi khi gửi lời mời:", error);
+            }
+        } else {
+            console.log("⚠️ Không có người dùng nào được chọn để gửi lời mời.");
+        }
+    };
+
     return (
         <Portal>
             <Modalize
@@ -76,7 +99,11 @@ const ModalInvite = (props: Props) => {
                 onClose={onClose}
                 FooterComponent={
                     <SectionComponent>
-                        <ButtonComponent text='Invite' type='primary' onPress={onShare} />
+                        <ButtonComponent text='Invite' type='primary' onPress={() => {
+                            onShare();
+                            handleSendInviteNotification();
+                            onClose();
+                        }} />
                     </SectionComponent>
                 }
             >

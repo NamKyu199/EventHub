@@ -9,6 +9,7 @@ import ContainerComponent from "./ContainerComponent";
 import DateTimePicker from "./DateTimePicker";
 import DropdownPicker from "./DropdownPicker";
 import InputComponent from "./InputComponent";
+import ListEventComponent from "./ListEventComponent";
 import MakerCustom from "./MakerCustom";
 import RowComponent from "./RowComponent";
 import SectionComponent from "./SectionComponent";
@@ -37,5 +38,6 @@ export {
     ButtonImagePicker,
     MakerCustom,
     AvatarComponent,
-    UserComponent
+    UserComponent,
+    ListEventComponent
 }

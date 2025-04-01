@@ -8,8 +8,6 @@ import { LoadingModal } from '~modals';
 import authenticationAPI from '~apis/authApi';
 import { Validate } from '~utils/validate';
 import { useDispatch } from 'react-redux';
-import { addAuth } from '~redux/reducers/authReducer';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const initValue = {
     fullName: '',

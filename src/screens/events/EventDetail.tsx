@@ -292,7 +292,12 @@ const EventDetail = ({ navigation, route }: any) => {
             </LinearGradient>
 
             <LoadingModal visible={isLoading} />
-            <ModalInvite visible={isVisibleModalInvite} onClose={() => setIsVisibleModalInvite(false)} />
+            <ModalInvite
+                visible={isVisibleModalInvite}
+                onClose={() => setIsVisibleModalInvite(false)}
+                eventId={item._id}
+                creatorId={item.authorIds}
+            />
         </View>
     )
 }

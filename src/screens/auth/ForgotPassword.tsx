@@ -7,12 +7,13 @@ import { appColors } from '~constants/appColors';
 const ForgotPassword = ({ navigation }: any) => {
 
     const [email, setEmail] = useState('');
+
     const handleForgotPassword = () => {
-        navigation.navigate('Verification', { email }); // Truyền email dưới dạng object
-    }
+        navigation.navigate('NewPassword', { email });
+    };
 
     return (
-        <ContainerComponent back isImageBackgroud>
+        <ContainerComponent back isImageBackgroud isScroll>
             <SectionComponent>
                 <TextComponent text='Lấy lại mật khẩu' title />
                 <SpaceComponent height={12} />
@@ -28,10 +29,10 @@ const ForgotPassword = ({ navigation }: any) => {
                 />
             </SectionComponent>
             <SectionComponent>
-                <ButtonComponent 
-                text={'Gửi'}
-                type='primary' 
-                onPress={handleForgotPassword} 
+                <ButtonComponent
+                    text={'Gửi'}
+                    type='primary'
+                    onPress={handleForgotPassword}
                 />
             </SectionComponent>
         </ContainerComponent>

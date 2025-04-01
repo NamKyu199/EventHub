@@ -1,4 +1,4 @@
-import { View, Text, Dimensions, ImageBackground, Image } from 'react-native'
+import { View, Text, Dimensions, ImageBackground, Image, StyleProp, ViewStyle } from 'react-native'
 import React from 'react'
 import CardComponent from './CardComponent';
 import TextComponent from './TextComponent';
@@ -20,12 +20,13 @@ import { numberToString } from '~utils/numberToString';
 
 interface Props {
   item: EventModle;
-  type: 'card' | 'list'
+  type: 'card' | 'list';
+  styles?: StyleProp<ViewStyle>
 }
 
 const EventItem = (props: Props) => {
 
-  const { item, type } = props;
+  const { item, type, styles } = props;
   const navigation: any = useNavigation();
   const auth: AuthState = useSelector(authSelector);
 
@@ -33,7 +34,7 @@ const EventItem = (props: Props) => {
     <CardComponent
       isShadow
       onPress={() => { navigation.navigate('EventDetail', { item }) }}
-      styles={{ width: appInfo.size.WIDTH * 0.7 }}>
+      styles={[{ width: appInfo.size.WIDTH * 0.7, marginBottom: 8 }, styles]}>
       {
         type === 'card' ? (
           <>
