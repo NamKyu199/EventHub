@@ -93,6 +93,29 @@ const EventDetail = ({ navigation, route }: any) => {
         }
     };
 
+    const handleCreateBillPaymentDetail = async () => {
+        const data = {
+            createAt: Date.now(),
+            createBy: auth.id,
+            eventId: item._id,
+            price: item.price,
+            authorId: item.authorIds
+        }
+        const api = `/buy-ticket`;
+
+        try {
+            const res = await eventAPI.HandleEvent(api, data, 'post');
+            // Kiểm tra dữ liệu trước khi điều hướng
+            if (res && res.data) {
+                navigation.navigate('PaymentScreen', { billDetail: res.data });
+            } else {
+                console.warn("⚠️ Dữ liệu phản hồi không hợp lệ:", res);
+            }
+        } catch (error) {
+            console.error("❌ Lỗi khi gọi API:", error);
+        }
+    };
+
     return (
         <View style={{ flex: 1, backgroundColor: appColors.white }}>
             <ImageBackground
@@ -226,9 +249,9 @@ const EventDetail = ({ navigation, route }: any) => {
                             >
                                 <Image
                                     source={
-                                        item.photoUrl
-                                            ? { uri: item.authorPhotoUrl }  // Sử dụng object với key 'uri'
-                                            : appImage.AvatarDemo
+                                        item.authorPhotoUrl && item.authorPhotoUrl !== 'null'
+                                            ? { uri: item.authorPhotoUrl } // Kiểm tra nếu URL hợp lệ
+                                            : appImage.AvatarDemo // Hình ảnh mặc định khi không có URL
                                     }
                                     style={{
                                         width: 48,
@@ -279,9 +302,12 @@ const EventDetail = ({ navigation, route }: any) => {
                 }}
             >
                 <ButtonComponent
-                    text='BUY TICKET $120'
+                    text={`BUY TICKET $${item.price}`}
                     type='primary'
-                    onPress={() => { }}
+                    onPress={() =>
+                        // navigation.navigate('PaymentScreen')
+                        handleCreateBillPaymentDetail()
+                    }
                     iconFlex='right'
                     icon={
                         <View style={[globalStyles.iconContainer, { backgroundColor: appColors.primary2 }]}>

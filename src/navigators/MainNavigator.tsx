@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import DrawerNavigator from './DrawerNavigator';
-import { EventDetail, ExploreEvents, ProfileScreen, SearchEvents } from '~screens';
+import { CategoryDetail, EventDetail, ExploreEvents, PaymentScreen, ProfileScreen, SearchEvents } from '~screens';
 
 
 const MainNavigator = () => {
@@ -17,6 +17,8 @@ const MainNavigator = () => {
       <Stack.Screen name='ProfileScreen' component={ProfileScreen} />
       <Stack.Screen name='ExploreEvents' component={ExploreEvents} />
       <Stack.Screen name='SearchEvents' component={SearchEvents} />
+      <Stack.Screen name='CategoryDetail' component={CategoryDetail} />
+      <Stack.Screen name='PaymentScreen' component={PaymentScreen} />
     </Stack.Navigator>
   );
 };

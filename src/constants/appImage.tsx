@@ -11,6 +11,8 @@ export const appImage = {
     AvatarDemo: require('../assets/images/AvtTest.jpg'),
     EventBackGround: require('../assets/images/ImageBackgroundEvent.jpg'),
     MarkerBg: require('../assets/images/Marker_bg.png'),
+    AvatarDemo1: require('../assets/images/avata-demo1.png'),
+    AvatarDemo2: require('../assets/images/avata-demo2.jpg'),
 }
 
 export default appImage

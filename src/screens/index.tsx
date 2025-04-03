@@ -4,9 +4,11 @@ import LoginScreen from "./auth/LoginScreen";
 import NewPassword from "./auth/NewPassword";
 import RegisterScreen from "./auth/RegisterScreen";
 import Verification from "./auth/Verification";
+import CategoryDetail from "./events/CategoryDetail";
 import EventDetail from "./events/EventDetail";
 import EventsScreen from "./events/EventsScreen";
 import ExploreEvents from "./events/ExploreEvents";
+import PaymentScreen from "./events/PaymentScreen";
 import SearchEvents from "./events/SearchEvents";
 import HomeScreen from "./home/HomeScreen";
 import NotificationScreen from "./home/NotificationScreen";
@@ -31,5 +33,7 @@ export {
     EditProfileScreen,
     NewPassword,
     NotificationScreen,
-    ExploreEvents
+    ExploreEvents,
+    CategoryDetail,
+    PaymentScreen
 }

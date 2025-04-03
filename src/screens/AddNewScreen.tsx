@@ -107,6 +107,7 @@ const AddNewScreen = ({ navigation }: any) => {
     };
 
     await AsyncStorage.setItem("savedEvent", JSON.stringify(newEventData));
+    console.log(newEventData)
     navigation.navigate('Explore', {
       screen: 'HomeScreen'
     });

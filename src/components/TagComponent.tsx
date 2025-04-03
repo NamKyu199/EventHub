@@ -6,7 +6,7 @@ import { appColors } from '~constants/appColors';
 import { fontFamililes } from '~constants/fontFamililes';
 
 interface Props {
-  onPress: () => void;
+  onPress?: () => void;
   lable: string;
   icon?: ReactNode;
   textColor?: string;
@@ -20,12 +20,14 @@ const TagComponent = (props: Props) => {
   const { onPress, lable, icon, textColor, bgColor, styles, textStyle } = props
 
   return (
-    <TouchableOpacity 
-      onPress={onPress} 
+    <TouchableOpacity
+      disabled={!onPress}
+      onPress={onPress}
       style={[
-        globalStyles.row, 
-        globalStyles.tag, 
-        { backgroundColor: bgColor ?? appColors.white }, 
+        globalStyles.row,
+        globalStyles.tag,
+        globalStyles.center,
+        { backgroundColor: bgColor ?? appColors.white },
         styles
       ]}
     >
@@ -34,7 +36,7 @@ const TagComponent = (props: Props) => {
         font={fontFamililes.medium}
         text={lable}
         styles={[
-          { marginLeft: icon ? 8 : 0 }, 
+          { marginLeft: icon ? 8 : 0 },
           textStyle // ✅ Truyền textStyle vào TextComponent
         ]}
         color={textColor ? textColor : bgColor ? appColors.white : appColors.gray}
