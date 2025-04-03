@@ -6,6 +6,7 @@ import { EventModle } from '~models/EventModel';
 import eventAPI from '~apis/eventApi';
 import { LoadingModal } from '~modals';
 import { useIsFocused } from '@react-navigation/native';
+import { StatusBar } from 'react-native';
 
 const EventsScreen = ({ navigation }: any) => {
   const [events, setevents] = useState<EventModle[]>([]);
@@ -53,6 +54,7 @@ const EventsScreen = ({ navigation }: any) => {
               />
             }
           />
+          <StatusBar barStyle='dark-content' />
           <SpaceComponent width={12} />
           <ButtonComponent
             icon={

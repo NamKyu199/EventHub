@@ -91,11 +91,11 @@ const HomeScreen = ({ navigation }: any) => {
     } catch (error) {
       console.log('Lỗi API in HomeScreeen:', error);
     }
-  }
+  };
 
   return (
     <View style={[globalStyles.container]}>
-      <StatusBar barStyle='dark-content' />
+      <StatusBar barStyle='light-content' />
 
       {/* Header Section */}
       <View
@@ -265,6 +265,7 @@ const HomeScreen = ({ navigation }: any) => {
             )}
           />
         </SectionComponent>
+        <SpaceComponent height={50} />
       </ScrollView>
     </View>
 

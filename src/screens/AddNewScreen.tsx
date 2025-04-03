@@ -161,8 +161,13 @@ const AddNewScreen = ({ navigation }: any) => {
         />
         <DropdownPicker
           selected={eventData.category}
-          values={[{ label: 'Sport', value: 'sport' }, { label: 'Food', value: 'food' }, { label: 'Art', value: 'art' }, { label: 'Music', value: 'music' }]}
-          onSelect={val => handleChangeValue('category', val)}
+          values={[
+            { label: 'Sport', value: 'sport' },
+            { label: 'Food', value: 'food' },
+            { label: 'Art', value: 'art' },
+            { label: 'Music', value: 'music' }
+          ]}
+          onSelect={(val) => handleChangeValue('category', val)}
         />
         <RowComponent>
           <DateTimePicker label='Start at:' type='time' onSelect={val => handleChangeValue('startAt', val)} selected={eventData.startAt} />

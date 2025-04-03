@@ -209,7 +209,7 @@ const EventDetail = ({ navigation, route }: any) => {
                             <RowComponent>
                                 <CardComponent styles={[globalStyles.nospaceCard, { width: 48, height: 48 }]} bgColor={`${appColors.primary}4D`}>
                                     <Calendar
-                                        size="32"
+                                        size={32}
                                         color={appColors.primary}
                                         variant="Bold"
                                     />
@@ -229,16 +229,15 @@ const EventDetail = ({ navigation, route }: any) => {
                             <RowComponent styles={{ alignItems: 'flex-start' }}>
                                 <CardComponent styles={[globalStyles.nospaceCard, { width: 48, height: 48 }]} bgColor={`${appColors.primary}4D`}>
                                     <Location
-                                        size="32"
+                                        size={32}
                                         color={appColors.primary}
                                         variant="Bold"
                                     />
                                 </CardComponent>
                                 <SpaceComponent width={12} />
                                 <View style={{ flex: 1, height: 48, justifyContent: 'space-around' }}>
-                                    <TextComponent text={item.locationTitle} font={fontFamililes.medium} size={16} styles={{ marginTop: -10 }} />
-                                    <SpaceComponent height={12} />
-                                    <TextComponent text={item.locationAddress} color={appColors.gray} styles={{ marginTop: -10 }} />
+                                    <TextComponent text={item.locationTitle} font={fontFamililes.medium} size={16} />
+                                    <TextComponent text={item.locationAddress} color={appColors.gray} />
                                 </View>
                             </RowComponent>
                             <SpaceComponent height={12} />
