@@ -16,6 +16,7 @@ const NotificationScreen = () => {
             const response = await userAPI.HandleUser('/get-invited-users');
             if (response?.data) {
                 setInvitedUsers(response.data);
+                console.log(response.data)
             }
         } catch (error) {
             console.error("❌ Lỗi lấy thông báo người dùng:", error);
@@ -42,7 +43,8 @@ const NotificationScreen = () => {
 
     const handleRejectInvite = (id: string) => {
         console.log("❌ Đã từ chối lời mời:", id);
-        handleSelectedId(id);
+        // Xóa user khỏi danh sách hiển thị
+        setInvitedUsers(prev => prev.filter((user: any) => user.userId !== id));
     };
 
     return (

@@ -10,8 +10,6 @@ import GeoLocation from '@react-native-community/geolocation';
 import { appInfo } from '~constants/appInfos';
 import GeoCoder from 'react-native-geocoding';
 
-GeoCoder.init(process.env.MAP_API_KEY as string)
-
 interface Props {
     visible: boolean;
     onClose: () => void;

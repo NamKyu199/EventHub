@@ -23,28 +23,18 @@ const NewPassword = ({ navigation, route }: any) => {
             console.log("Mật khẩu không khớp");
             return;
         }
-    
+
         try {
             setIsloading(true);
-    
+
             const api = '/change-password';
             const body = {
                 email: email || auth.email,  // Dùng email từ route params hoặc từ Redux store
                 newPassword: password,        // Gửi mật khẩu mới
                 repassword: checkPassword     // Gửi mật khẩu nhập lại
             };
-    
-            // Gửi yêu cầu API để thay đổi mật khẩu
-            const res = await authenticationAPI.HandeleAuthentication(api, body, 'post');
-    
-            if (res?.data?.message) {
-                console.log(res.data.message); // In thông báo từ API
-                if (res.data.message === "Mật khẩu đã được thay đổi thành công") {
-                    navigation.navigate('LoginScreen'); // Quay lại trang đăng nhập nếu mật khẩu thay đổi thành công
-                }
-            } else {
-                console.log("Đã có lỗi khi thay đổi mật khẩu");
-            }
+            await authenticationAPI.HandeleAuthentication(api, body, 'post');
+            navigation.navigate('LoginScreen'); // Quay lại trang đăng nhập nếu mật khẩu thay đổi thành công
         } catch (error) {
             console.error("Error:", error);
         } finally {
@@ -61,6 +51,7 @@ const NewPassword = ({ navigation, route }: any) => {
                     value={password}
                     onChange={val => setPassword(val)}
                     placeholder='Nhập mật khẩu mới'
+                    isPassword
                     affix={
                         <Sms size={22} color={appColors.gray} />
                     }
@@ -69,6 +60,7 @@ const NewPassword = ({ navigation, route }: any) => {
                     value={checkPassword}
                     onChange={val => setCheckPassword(val)}
                     placeholder='Nhập lại mật khẩu mới'
+                    isPassword
                     affix={
                         <Sms size={22} color={appColors.gray} />
                     }

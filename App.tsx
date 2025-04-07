@@ -7,6 +7,10 @@ import AppRouters from '~navigators/AppRouters';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Host } from 'react-native-portalize'
 import { HandleNotification } from '~utils/handleNotification';
+import GeoCoder from 'react-native-geocoding';
+
+GeoCoder.init(process.env.MAP_API_KEY as string)
+
 
 const App = () => {
 

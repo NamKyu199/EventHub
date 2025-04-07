@@ -5,6 +5,7 @@ import {
   ViewStyle,
   TextStyle,
   TouchableOpacity,
+  DimensionValue,
 } from 'react-native';
 import React, { ReactNode } from 'react';
 import { globalStyles } from '~styles/globalStyles';
@@ -24,6 +25,7 @@ interface Props {
   onPress?: () => void;
   iconFlex?: 'right' | 'left';
   disable?: boolean;
+  width?: DimensionValue; // ✅ Thay đổi ở đây
 }
 
 const ButtonComponent = (props: Props) => {
@@ -39,6 +41,7 @@ const ButtonComponent = (props: Props) => {
     iconFlex,
     type,
     disable,
+    width,
   } = props;
 
   return type === 'primary' ? (
@@ -56,7 +59,7 @@ const ButtonComponent = (props: Props) => {
                 ? appColors.gray4
                 : appColors.primary,
             marginBottom: 17,
-            width: '90%'
+            width: width ? width : '90%',
           },
           styles,
         ]}>

@@ -107,12 +107,10 @@ const AddNewScreen = ({ navigation }: any) => {
     };
 
     await AsyncStorage.setItem("savedEvent", JSON.stringify(newEventData));
-    console.log(newEventData)
+    await eventAPI.HandleEvent(`/add-new`, newEventData, 'post');
     navigation.navigate('Explore', {
       screen: 'HomeScreen'
     });
-
-    await eventAPI.HandleEvent(`/add-new`, newEventData, 'post');
   };
 
   const handleFileSelected = (val: ImageOrVideo) => {

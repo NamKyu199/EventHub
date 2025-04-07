@@ -98,10 +98,12 @@ const CategoriesList = (props: Props) => {
                     <TagComponent
                         styles={[globalStyles.shadow, { marginRight: index === categories.length - 1 ? 28 : 12, minWidth: 82 }]}
                         bgColor={isColor ? item.color : appColors.white}
-                        onPress={() => navigation.navigate('CategoryDetail', {
+                        onPress={() => 
+                            navigation.navigate('CategoryDetail', {
                             id: item._id,
                             title: item.title
-                        })}
+                        })
+                    }
                         lable={item.title}
                         icon={renderIconCategories(item.key)} // Pass icon from renderIconCategories
                         textColor={isColor ? appColors.white : appColors.text}

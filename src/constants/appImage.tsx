@@ -13,6 +13,7 @@ export const appImage = {
     MarkerBg: require('../assets/images/Marker_bg.png'),
     AvatarDemo1: require('../assets/images/avata-demo1.png'),
     AvatarDemo2: require('../assets/images/avata-demo2.jpg'),
+    EmptyEvents: require('../assets/images/empty_events.png'),
 }
 
 export default appImage

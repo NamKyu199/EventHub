@@ -30,11 +30,13 @@ import { AddressModel } from '~models/AddressModel';
 import eventAPI from '~apis/eventApi';
 import { EventModle } from '~models/EventModel';
 import { useFocusEffect } from '@react-navigation/native';
+import { ModalFilter } from '~modals';
 
 const HomeScreen = ({ navigation }: any) => {
   const [currentLocation, setCurrentLocation] = useState<AddressModel>();
   const [events, setEvents] = useState<EventModle[]>([]);
   const [nearbyEvents, setNearbyEvents] = useState<EventModle[]>([]);
+  const [isVisibleModalFilter, setIsVisibleModalFilter] = useState(false);
 
   // ✅ Tự động load lại khi HomeScreen được focus
   useFocusEffect(
@@ -197,9 +199,7 @@ const HomeScreen = ({ navigation }: any) => {
               }
               bgColor="#5D56F3"
               onPress={() =>
-                navigation.navigate("SearchEvents", {
-                  isFilter: true,
-                })
+                setIsVisibleModalFilter(true)
               }
             />
           </RowComponent>
@@ -227,7 +227,11 @@ const HomeScreen = ({ navigation }: any) => {
         style={{ flex: 1, paddingTop: 40 }} // Tạo khoảng cách với CategoriesList
       >
         <SectionComponent>
-          <TabBarComponent title='Upcoming Events' onPress={() => navigation.navigate('ExploreEvents')} />
+          <TabBarComponent title='All Events'
+            onPress={() => navigation.navigate('ExploreEvents', {
+              key: 'upcoming',
+              title: 'All Events'
+            })} />
           <FlatList
             showsHorizontalScrollIndicator={false}
             horizontal
@@ -255,7 +259,11 @@ const HomeScreen = ({ navigation }: any) => {
               </View>
             </RowComponent>
           </CardComponent>
-          <TabBarComponent title='Nearby You' onPress={() => { }} />
+          <TabBarComponent title='Nearby You'
+            onPress={() => navigation.navigate('ExploreEvents', {
+              key: 'nearby',
+              title: 'Nearby You'
+            })} />
           <FlatList
             showsHorizontalScrollIndicator={false}
             horizontal
@@ -267,6 +275,14 @@ const HomeScreen = ({ navigation }: any) => {
         </SectionComponent>
         <SpaceComponent height={50} />
       </ScrollView>
+      <ModalFilter
+        visible={isVisibleModalFilter}
+        onFilter={vals =>
+          navigation.navigate("SearchEvents", {
+            isFilter: vals,
+          })
+        }
+        onClose={() => setIsVisibleModalFilter(false)} />
     </View>
 
   );

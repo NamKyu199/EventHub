@@ -6,7 +6,6 @@ export const appInfo = {
         HEIGHT: Dimensions.get('window').height,
     },
     BASE_URL: 'http://192.168.1.22:3001',
-    // BASE_URL: 'http://localhost:3001',
     // BASE_URL: 'http://172.20.10.3:3001',
     GoogleApiKey: 'AIzaSyCbtwJ3e1wGs0RcFkgQPtaLwg0P4XxkELA',
     monthNames: [

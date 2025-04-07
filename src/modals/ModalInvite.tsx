@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import { fontFamililes } from '~constants/fontFamililes';
 import { SearchNormal1, TickCircle } from 'iconsax-react-native';
 import { appColors } from '~constants/appColors';
-import { Alert, Share, View } from 'react-native';
+import { Alert, ScrollView, Share, View } from 'react-native';
 import userAPI from '~apis/userApi';
 
 interface Props {
@@ -71,22 +71,16 @@ const ModalInvite = (props: Props) => {
     };
 
     const handleSendInviteNotification = async () => {
-        if (userSelected.length > 0) {
-            const api = `/send-invite`;
-            console.log("📤 Đang gửi lời mời đến:", userSelected);
+        const api = `/send-invite`;
+        console.log("📤 Đang gửi lời mời từ user:", auth.id);
 
-            try {
-                const response = await userAPI.HandleUser(api, {
-                    ids: userSelected,
-                    eventId: eventId,
-                    creatorId: creatorId // Thêm creatorId vào payload
-                }, 'post');
-                console.log("✅ Gửi lời mời thành công:", response.data);
-            } catch (error) {
-                console.log("❌ Lỗi khi gửi lời mời:", error);
-            }
-        } else {
-            console.log("⚠️ Không có người dùng nào được chọn để gửi lời mời.");
+        try {
+            await userAPI.HandleUser(api, {
+                id: auth.id,
+                eventId: eventId
+            }, 'post');
+        } catch (error) {
+            console.log("❌ Lỗi khi gửi lời mời:", error);
         }
     };
 
@@ -107,40 +101,45 @@ const ModalInvite = (props: Props) => {
                     </SectionComponent>
                 }
             >
-                <SectionComponent styles={{ paddingTop: 30 }}>
-                    <TextComponent
-                        title
-                        text="Invite Friend"
-                        size={24}
-                        font={fontFamililes.medium}
-                    />
-                    <SpaceComponent height={12} />
-                    <InputComponent
-                        placeholder="Search"
-                        value=""
-                        onChange={val => console.log(val)}
-                        suffix={
-                            <SearchNormal1 size={20} color={appColors.primary} />
-                        }
-                        allowClear
-                    />
-                    {Array.isArray(friendIds) && friendIds.length > 0
-                        ? friendIds.map((id: string) => (
-                            <RowComponent key={id}>
-                                <View style={{ flex: 1 }}>
-                                    <UserComponent
-                                        userId={id}
-                                        type="Invite"
-                                        onPress={() => handleSelectedId(id)} />
-                                </View>
-                                <TickCircle
-                                    size={24}
-                                    color={userSelected.includes(id) ? appColors.primary : appColors.gray2}
-                                    variant={userSelected.includes(id) ? 'Bold' : 'Outline'}
-                                />
-                            </RowComponent>
-                        )) : <TextComponent text="No friends" />}
-                </SectionComponent>
+                <ScrollView>
+                    <SectionComponent styles={{ paddingTop: 30 }}>
+                        <TextComponent
+                            title
+                            text="Invite Friend"
+                            size={24}
+                            font={fontFamililes.medium}
+                        />
+                        <SpaceComponent height={12} />
+                        <InputComponent
+                            placeholder="Search"
+                            value=""
+                            onChange={val => console.log(val)}
+                            suffix={
+                                <SearchNormal1 size={20} color={appColors.primary} />
+                            }
+                            allowClear
+                        />
+                        {Array.isArray(friendIds) && friendIds.length > 0
+                            ? friendIds
+                                .filter((id: string) => id !== auth.id) // Lọc bỏ chính mình
+                                .map((id: string) => (
+                                    <RowComponent key={id}>
+                                        <View style={{ flex: 1 }}>
+                                            <UserComponent
+                                                userId={id}
+                                                type="Invite"
+                                                onPress={() => handleSelectedId(id)} />
+                                        </View>
+                                        <TickCircle
+                                            size={24}
+                                            color={userSelected.includes(id) ? appColors.primary : appColors.gray2}
+                                            variant={userSelected.includes(id) ? 'Bold' : 'Outline'}
+                                        />
+                                    </RowComponent>
+                                ))
+                            : <TextComponent text="No friends" />}
+                    </SectionComponent>
+                </ScrollView>
             </Modalize>
         </Portal>
     );

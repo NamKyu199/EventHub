@@ -33,4 +33,11 @@ export class DateTime {
 
         return `${formatTime(dateStart)} - ${formatTime(dateEnd)}`;
     };
+    static GetEventTime = (date: number, time: number) => {
+        const d = new Date(date);
+        const t = new Date(time);
+        const value = new Date(`${d.getFullYear()}-${numberToString(d.getMonth() + 1)}-${numberToString(d.getDate())} ${numberToString(t.getHours())} : ${numberToString(t.getMinutes())} : ${numberToString(t.getSeconds())}`).getTime();
+
+        return value;
+    }
 };

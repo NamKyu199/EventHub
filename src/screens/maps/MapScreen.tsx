@@ -30,7 +30,8 @@ const MapScreen = ({ navigation }: any) => {
       (error) => {
         console.error('❌ Lỗi lấy vị trí:', error);
       },
-      { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 });}, []);
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 });
+  }, []);
 
   useEffect(() => {
     if (currentLocation) getNearbyEvents();
@@ -104,16 +105,22 @@ const MapScreen = ({ navigation }: any) => {
       ) : null}
 
       {/* Header */}
-      <View style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        padding: 20,
-        paddingTop: 40,
-      }}>
+      <View
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          padding: 20,
+          paddingTop: 40,
+        }}>
         <RowComponent>
-          <View style={{ flex: 1 }}>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('SearchEvents', {
+                isFilter: false,
+              })}
+            style={{ flex: 1 }}>
             <InputComponent
               styles={[globalStyles.shadow, { marginBottom: 0 }]}
               affix={
@@ -125,7 +132,7 @@ const MapScreen = ({ navigation }: any) => {
               value=''
               onChange={val => console.log(val)}
             />
-          </View>
+          </TouchableOpacity>
           <SpaceComponent width={12} />
           <CardComponent
             onPress={moveToCurrentLocation}
